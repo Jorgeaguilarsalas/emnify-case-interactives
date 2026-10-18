@@ -6,7 +6,7 @@ Independent, unofficial support material for an interview case study. Not an Emn
 
 - `/` — index / three interactive explanations
 - `/connected-delivery/` — Connected Delivery v0.3.9 analytical explorer (public derivative: private Drive document URLs removed)
-- `/q03/` — Q03 Pipeline Simulator (working REVIEW version; Drive file title says v4.2 while the embedded HTML heading says v4.1; version label pending reconciliation)
+- `/q03/` — Q03 Pipeline Simulator v5 (working REVIEW: case frictions, proposed J3→J4 workflow and illustrative exception handling)
 - `/q05/` — Q05 Business Case four-page v2 (all starting numbers and scenarios hypothetical)
 
 ## Publish with GitHub Pages
@@ -24,6 +24,6 @@ Expected URLs *after deployment*, not yet verified:
 ## Content governance
 
 - Source HTMLs were not modified. The Connected Delivery public derivative removes only private Google Drive document URLs while retaining analytical content and app logic.
-- Q03 v4.1 is a working review edition; presentation promotion needs separate owner approval.
+- Q03 v5 is a working review edition; its interactive page is published, but employer-presentation promotion remains a separate approval.
 - These are explanatory hypothetical models, not verified company internal procedures or actual company cost data.
 - Do not assume Drive file previews execute JavaScript.
