@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Independent case-study model: case-described frictions, a conditional proposed workflow and illustrative exception decisions.">
-<title>Q03 | Contract to delivery · Minimal process explorer v5</title>
+<title>Q03 | Contract to delivery · Minimal process explorer v5.1</title>
 <style>
 :root{--ink:#1b3034;--sub:#586e70;--quiet:#728387;--line:#dce5e3;--bg:#edf1ef;--paper:#fff;--wash:#f7f9f8;--green:#08785f;--green-wash:#eaf6f0;--green-line:#a8d4c2;--red:#ad4945;--red-wash:#fff3f1;--red-line:#e7bdb7;--amber:#9a6b25;--amber-wash:#fff8ea}
 *{box-sizing:border-box}
@@ -118,11 +118,43 @@ h1,h2,h3,h4,p{margin-top:0}.viewhead h1{font-size:26px;line-height:1.13;letter-s
 @media(max-width:520px){.step-mobile-stage{display:inline}.topbar{margin-bottom:14px}.tab{gap:4px;padding:9px 7px;flex-direction:column;align-items:flex-start}.tab strong{font-size:11.5px}.tab small{display:none}.view{margin-top:19px}.viewhead h1{font-size:22px}.scope{font-size:9px}.lane{padding:13px}.lane-flow{flex-wrap:nowrap;gap:3px}.lane-node{min-width:0;padding:10px 5px;font-size:10px}.lane-arrow{font-size:12px}.friction{gap:5px;padding:10px}.friction-chip{font-size:10px}.stepgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.phasebar{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}.phasebtn{padding:8px 5px;font-size:10px}.phasebtn .num{display:block;margin-bottom:3px}.selector-head select{min-width:0;width:100%}.selector-head label{width:100%}.focus-main,.criteria,.exc-left,.exc-right{padding:16px}.compact-outcomes,.work-split{grid-template-columns:1fr 1fr}.work-split article{padding:10px 8px}.work-split p{font-size:11px}.work-split h3{font-size:9px}.after-route{gap:7px}.after-route span{font-size:10px}}
 @media print{body{background:white}.shell{border:0;box-shadow:none;margin:0}.tabs,.fullscreen{display:none}.view{display:block!important;page-break-after:always}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+/* v5.1: aligned current/proposed process references and prominent PR10 comparison */
+.comparison-step{cursor:default}
+.comparison-step:hover{border-color:var(--line)}
+.comparison-friction,.comparison-friction:hover{background:var(--red-wash);border-color:var(--red-line)}
+.comparison-friction .step-key,.comparison-badge{color:var(--red)}
+.comparison-badge{font-size:9px;font-weight:850;letter-spacing:.035em}
+.case-problem{margin-top:18px;border:1px solid var(--red-line);background:#fffaf9;border-radius:11px;padding:18px 20px}
+.problem-lead{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:14px}
+.problem-flag{color:var(--red);font-size:10px;font-weight:820;letter-spacing:.07em}
+.problem-lead h2{font-size:19px;letter-spacing:-.03em;line-height:1.23;margin:0;font-weight:750}
+.problem-sequence{display:flex;align-items:stretch;gap:8px}
+.problem-event{flex:1;min-width:0;border:1px solid var(--line);border-radius:8px;background:white;padding:12px 10px;display:flex;flex-direction:column;gap:5px}
+.problem-event>span{font-size:10px;color:var(--quiet);font-weight:800}
+.problem-event strong{font-size:13px;line-height:1.25}
+.problem-event small{font-size:10px;color:var(--sub)}
+.problem-event-red{border-color:var(--red-line)}
+.problem-event-red>span{color:var(--red)}
+.problem-arrow{align-self:center;color:var(--red);font-size:18px;font-weight:800}
+.problem-boundary{margin:11px 0 0;color:var(--sub);font-size:11px;line-height:1.4}
+.current-footline{display:flex;gap:15px;justify-content:space-between;flex-wrap:wrap;margin:12px 0 0;font-size:11px;color:var(--sub);line-height:1.5}
+.readiness-questions{display:grid;gap:8px}
+.readiness-questions[hidden],.criteria-dl[hidden]{display:none}
+.readiness-question{display:flex;align-items:center;gap:10px;border:1px solid var(--green-line);border-radius:7px;background:var(--green-wash);padding:10px}
+.readiness-question span{font-size:10px;font-weight:850;color:var(--green)}
+.readiness-question strong{font-size:13px;line-height:1.2}
+.readiness-answer{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:4px}
+.readiness-answer span{padding:8px;border:1px solid var(--line);border-radius:6px;background:var(--wash);font-size:10px;line-height:1.3;font-weight:680}
+.readiness-answer span:first-child{border-color:var(--green-line);color:var(--green)}
+.readiness-answer span:last-child{border-color:var(--red-line);color:var(--red)}
+@media(max-width:780px){.problem-sequence{display:grid;grid-template-columns:1fr 1fr;gap:9px}.problem-arrow{display:none}.problem-lead h2{font-size:17px}.case-problem{padding:14px}}
+@media(max-width:520px){.comparison-step .step-title{font-size:12px}.comparison-badge{font-size:8px}.problem-sequence{grid-template-columns:1fr 1fr}.problem-event{padding:9px}.problem-event strong{font-size:11px}.readiness-answer{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <main class="shell" id="shell">
-<header class="topbar"><p class="eyebrow">Q03 · TASK 2 / QUESTION 2</p><div class="topright"><span>PROCESS EXPLORER · v5 REVIEW</span><button class="fullscreen" id="fullscreen" title="Full screen" aria-label="Toggle full screen" type="button">⛶</button></div></header>
+<header class="topbar"><p class="eyebrow">Q03 · TASK 2 / QUESTION 2</p><div class="topright"><span>PROCESS EXPLORER · v5.1 REVIEW</span><button class="fullscreen" id="fullscreen" title="Full screen" aria-label="Toggle full screen" type="button">⛶</button></div></header>
 <nav class="tabs" aria-label="Q03 three views">
 <button class="tab" id="tab-current" data-view="current" aria-selected="true" aria-controls="view-current" type="button"><span class="tab-num">01</span><span><strong>Current case</strong><small>Where friction appears</small></span></button>
 <button class="tab" id="tab-proposed" data-view="proposed" aria-selected="false" aria-controls="view-proposed" type="button"><span class="tab-num">02</span><span><strong>Proposed process</strong><small>What would change</small></span></button>
@@ -130,25 +162,30 @@ h1,h2,h3,h4,p{margin-top:0}.viewhead h1{font-size:26px;line-height:1.13;letter-s
 </nav>
 <section class="view" id="view-current" role="region" aria-labelledby="tab-current">
 <div class="viewhead"><h1>Current case</h1><span class="scope">CASE-DESCRIBED</span></div>
-<div class="case-grid">
-  <article class="lane">
-    <h2>Contract → Service Delivery</h2>
-    <div class="lane-flow" aria-label="Case-described contracting flow">
-      <div class="lane-node">Sales drafts</div><span class="lane-arrow">›</span><div class="lane-node">Pricing*<br>Sales Ops review</div><span class="lane-arrow">›</span><div class="lane-node">Contract signed</div><span class="lane-arrow">›</span><div class="lane-node">Delivery</div>
-    </div>
-    <div class="lane-alert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg><span>Post-signature clarification ↩ Sales</span></div>
-    <p class="lane-caption">*Pricing applies only under its threshold rule. Sales Ops already reviews before sending.</p>
-  </article>
-  <article class="lane">
-    <h2>SIM order → Shipment</h2>
-    <div class="lane-flow" aria-label="Case-described SIM order flow">
-      <div class="lane-node">Portal / other route</div><span class="lane-arrow">›</span><div class="lane-node">Finance*</div><span class="lane-arrow">›</span><div class="lane-node">Logistics ships</div>
-    </div>
-    <p class="lane-caption">*Finance processing applies to some orders. The case does not establish that manual handling or an alternative channel is a failure.</p>
-  </article>
+<div class="stage-grid" aria-hidden="true"><div class="stage">J3 · Contracting</div><div class="stage">J3 → J4 · Handover</div><div class="stage">J4 · SIM fulfilment</div></div>
+<div class="stepgrid comparison-steps" aria-label="Same six process references as the proposed view">
+  <div class="step comparison-step"><span class="step-key"><span class="step-mobile-stage">J3 · </span>PR06</span><span class="step-title">Draft contract</span><span class="step-owner">Sales</span></div>
+  <div class="step comparison-step"><span class="step-key"><span class="step-mobile-stage">J3 · </span>PR07 / PR08</span><span class="step-title">Review & approve</span><span class="step-owner">Pricing* · Sales Ops</span></div>
+  <div class="step comparison-step"><span class="step-key"><span class="step-mobile-stage">J3 · </span>PR09</span><span class="step-title">Sign agreement</span><span class="step-owner">Sales · Customer</span></div>
+  <div class="step comparison-step comparison-friction"><span class="step-key"><span class="step-mobile-stage">J3→J4 · </span>PR10</span><span class="step-title">Handover</span><span class="comparison-badge">CLARIFICATION LOOP</span><span class="step-owner">Sales → Service Delivery</span></div>
+  <div class="step comparison-step"><span class="step-key"><span class="step-mobile-stage">J4 · </span>PR12 / PR13</span><span class="step-title">Process SIM order</span><span class="step-owner">Customer · Finance*</span></div>
+  <div class="step comparison-step"><span class="step-key"><span class="step-mobile-stage">J4 · </span>PR14</span><span class="step-title">Fulfil & ship</span><span class="step-owner">Logistics</span></div>
 </div>
-<div class="friction"><span class="friction-title">TASK 3 · REPORTED FRICTIONS</span><span class="friction-chip">Clarification loops</span><span class="friction-chip">Onboarding waits</span><span class="friction-chip">SDM rework</span><small>Reported, not quantified</small></div>
-<details class="disclosure"><summary>Questions to validate before redesign (4)</summary><div class="four-cues"><div class="cue"><strong>HANDOVER</strong><span>Where does clarification start?</span></div><div class="cue"><strong>AUTHORITY</strong><span>Who can unblock the next step?</span></div><div class="cue"><strong>SIM ORDERS</strong><span>When does Finance apply?</span></div><div class="cue"><strong>IMPACT</strong><span>Does the change reduce rework?</span></div></div></details>
+<div class="case-problem" aria-label="Reported post-signature clarification friction">
+  <div class="problem-lead"><span class="problem-flag">REPORTED FRICTION · PR10</span><h2>Signed contract. Delivery still needs clarification.</h2></div>
+  <div class="problem-sequence">
+    <div class="problem-event"><span>01</span><strong>Contract signed</strong><small>PR09</small></div>
+    <span class="problem-arrow" aria-hidden="true">→</span>
+    <div class="problem-event problem-event-red"><span>02</span><strong>Unclear implementation detail</strong><small>Discovered downstream</small></div>
+    <span class="problem-arrow" aria-hidden="true">↶</span>
+    <div class="problem-event problem-event-red"><span>03</span><strong>Back to Sales</strong><small>Clarification required</small></div>
+    <span class="problem-arrow" aria-hidden="true">→</span>
+    <div class="problem-event problem-event-red"><span>04</span><strong>Waiting / rework</strong><small>Onboarding slows</small></div>
+  </div>
+  <p class="problem-boundary">The case reports clarification and delays, but does not establish today's handover criteria or the underlying root cause.</p>
+</div>
+<div class="current-footline"><span><b>SIM route:</b> Portal or other valid channel → Finance only if required → Logistics.</span><span>Normal controls ≠ failures.</span></div>
+<details class="disclosure"><summary>Four questions to validate before redesign</summary><div class="four-cues"><div class="cue"><strong>HANDOVER</strong><span>Where does clarification start?</span></div><div class="cue"><strong>AUTHORITY</strong><span>Who can unblock the next step?</span></div><div class="cue"><strong>SIM ORDERS</strong><span>When does Finance apply?</span></div><div class="cue"><strong>IMPACT</strong><span>Does the change reduce rework?</span></div></div></details>
 </section>
 <section class="view" id="view-proposed" role="region" aria-labelledby="tab-proposed" hidden>
 <div class="viewhead"><h1>Proposed process</h1><span class="scope">CANDIDATE MODEL</span></div>
@@ -156,7 +193,12 @@ h1,h2,h3,h4,p{margin-top:0}.viewhead h1{font-size:26px;line-height:1.13;letter-s
 <div class="stepgrid" id="stepgrid" aria-label="Six clickable process steps beginning at PR06"></div>
 <div class="route-note"><strong>PR10 · Make the next action executable</strong><span>Decision authority stays with the relevant team; independent work may proceed when ready.</span></div>
 <div class="focus"><div class="focus-main"><div class="focus-eyebrow" id="stepIndex"></div><h2 id="stepName"></h2><p id="stepPurpose"></p><div class="compact-outcomes"><div><b id="positiveLabel"></b><span id="positiveText"></span></div><div><b id="boundaryLabel"></b><span id="boundaryText"></span></div></div></div>
-<div class="criteria"><h3>For this step</h3><dl class="criteria-dl" id="stepCriteria"></dl><details class="criteria-full" id="stepMore"><summary>All five criteria + evidence note</summary><dl class="criteria-dl" id="stepFullCriteria"></dl><p class="criteria-footnote" id="stepCaveat"></p></details></div></div>
+<div class="criteria"><h3 id="criteriaTitle">For this step</h3><div class="readiness-questions" id="readinessQuestions" hidden>
+<div class="readiness-question"><span>01</span><strong>What can start now?</strong></div>
+<div class="readiness-question"><span>02</span><strong>What's missing or blocked?</strong></div>
+<div class="readiness-question"><span>03</span><strong>Who can decide?</strong></div>
+<div class="readiness-answer"><span>✓ Ready & authorized → Proceed</span><span>! Dependent work → Wait & assign owner</span></div>
+</div><dl class="criteria-dl" id="stepCriteria"></dl><details class="criteria-full" id="stepMore"><summary>All five criteria + evidence note</summary><dl class="criteria-dl" id="stepFullCriteria"></dl><p class="criteria-footnote" id="stepCaveat"></p></details></div></div>
 <div class="after-route"><b>BEYOND PHYSICAL SHIPMENT</b><span>M1 Provision / activate → M2 Working connectivity → M3 First customer value</span></div>
 </section>
 <section class="view" id="view-exceptions" role="region" aria-labelledby="tab-exceptions" hidden>
@@ -199,7 +241,7 @@ const exceptionModels={
 };
 
 const $=id=>document.getElementById(id);
-let activeView='current',selected=0,exceptionKind='missing',phase=0;
+let activeView='current',selected=3,exceptionKind='missing',phase=0;
 const viewNames=['current','proposed','exceptions'];
 function setView(which){if(!viewNames.includes(which))return;activeView=which;for(const v of viewNames){$('view-'+v).hidden=v!==which;$('tab-'+v).setAttribute('aria-selected',String(v===which));}if(which==='proposed')renderSteps();if(which==='exceptions')renderException();}
 for(const t of document.querySelectorAll('.tab'))t.addEventListener('click',()=>setView(t.dataset.view));
@@ -218,6 +260,9 @@ function renderSteps(){
  const div=$('stepgrid');div.replaceChildren();displaySteps.forEach((d,i)=>{const b=document.createElement('button');b.type='button';b.className='step'+(d.improve?' step-improve':'');b.setAttribute('aria-current',i===selected?'step':'false');b.innerHTML=`<span class="step-key"><span class="step-mobile-stage">${mobileStage[i]} · </span>${d.id}</span><span class="step-title">${d.title}</span>${d.improve?'<span class="step-badge">CLEAR NEXT STEP</span>':''}<span class="step-owner">${d.owner}</span>`;b.addEventListener('click',()=>{selected=i;$('stepMore').open=false;renderSteps()});div.append(b)});
  const s=steps[selected],q=summaries[selected];$('stepIndex').textContent=`${String(selected+1).padStart(2,'0')} / 06 · ${s.id}`;$('stepName').textContent=s.title;$('stepPurpose').textContent=q.purpose;
  $('positiveLabel').textContent=q.a;$('positiveText').textContent=q.at;$('boundaryLabel').textContent=q.b;$('boundaryText').textContent=q.bt;
+ $('criteriaTitle').textContent=selected===3?'PR10 · Readiness check':'For this step';
+ $('readinessQuestions').hidden=selected!==3;
+ $('stepCriteria').hidden=selected===3;
  criteriaAppend($('stepCriteria'),[[shortLabels[0],s.owner],[shortLabels[1],s.details.trigger],[shortLabels[2],s.details.complete]]);
  criteriaAppend($('stepFullCriteria'),[['Owner & authority',s.details.owner],['Trigger',s.details.trigger],['Inputs & dependencies',s.details.inputs],['Completion criteria',s.details.complete],['Next handoff',s.details.handoff]]);
  $('stepCaveat').textContent=s.details.caveat;
