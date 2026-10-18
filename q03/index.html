@@ -141,7 +141,7 @@ h1,h2,h3,h4,p{margin-top:0}.viewhead h1{font-size:26px;line-height:1.13;letter-s
 @media(max-width:520px){.case-pr-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.case-pr-grid>div{min-height:65px;padding:8px}.case-pr-grid span{font-size:11px}.case-pair h2{font-size:18px}.case-issue,.case-neutral{padding:14px}}
 
 .scenario-panel{border:1px solid var(--line);border-radius:10px;padding:12px;margin:12px 0;font-size:13px}.scenario-panel label{display:block;font-weight:750;margin-bottom:6px}.scenario-panel select{max-width:100%;width:100%}.scenario-columns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.scenario-columns div{padding:10px;border:1px solid var(--line);border-radius:7px}.scenario-columns b{display:block;font-size:11px;margin-bottom:5px}.scenario-action{background:#f6f8f8;padding:10px;border-radius:7px;line-height:1.45}.scenario-panel small{display:block;color:var(--sub);margin-top:8px}@media(max-width:650px){.scenario-columns{grid-template-columns:1fr}}
-</style>
+#workSplit[hidden],#authorityRow[hidden],#resolution[hidden]{display:none!important}\n</style>
 </head>
 <body>
 <main class="shell" id="shell">
@@ -179,7 +179,7 @@ h1,h2,h3,h4,p{margin-top:0}.viewhead h1{font-size:26px;line-height:1.13;letter-s
 <div class="selector-head"><label for="exceptionKind">Choose an exception</label><select id="exceptionKind"><option value="missing">Missing implementation detail</option><option value="technical">Technical feasibility</option><option value="pricing">Pricing authorization</option><option value="finance">Finance processing for SIM order</option></select></div>
 <div class="scenario-panel"><label for="scenarioPick">Select an example within this exception</label><select id="scenarioPick"></select><div class="scenario-columns"><div><b>SPECIFIC PROBLEM</b><span id="scenarioProblem"></span></div><div><b>DELIVERY IMPACT</b><span id="scenarioImpact"></span></div></div><div class="scenario-action"><b id="scenarioStage"></b><div id="scenarioAction"></div></div><small>Illustrative scenarios, not verified Emnify incidents.</small></div><div class="phasebar" id="phasebar" aria-label="Four exception handling phases"></div>
 <div class="exc-panel"><div class="exc-left"><div class="exc-index" id="phaseIndex"></div><h2 id="phaseTitle"></h2><p class="exc-summary" id="phaseShort"></p><div class="authority-row" id="authorityRow" hidden><span>DECISION OWNER</span><strong id="decisionOwner"></strong><span>COORDINATES</span><strong id="actionOwner"></strong></div>
-<div class="work-split" id="workSplit" hidden><article class="go"><h3>✓ MAY CONTINUE IF READY</h3><p id="canSummary"></p></article><article class="wait"><h3>— MUST WAIT</h3><p id="waitSummary"></p></article></div></div>
+<div class="work-split" id="workSplit" hidden><article class="go"><h3>✓ CAN PROCEED — IF AUTHORIZED</h3><p id="canSummary"></p></article><article class="wait"><h3>— BLOCKED — DEPENDENCY UNRESOLVED</h3><p id="waitSummary"></p></article></div></div>
 <div class="exc-right"><h3 id="decisionHeading">Phase outcome</h3><p class="res-note" id="decisionHint"></p><select id="resolution" disabled aria-label="Illustrative verification outcome"><option value="pending">Pending / not verified</option><option value="cleared">Authorized / confirmed</option><option value="blocked">Rejected / blocked</option></select><div class="result" id="result" role="status" aria-live="polite"></div>
 <div class="phase-nav"><button class="navbtn" id="prevPhase" type="button">← Back</button><button class="navbtn primary" id="nextPhase" type="button">Next →</button></div></div></div>
 <details class="exc-detail"><summary>Full routing, evidence and policy boundary</summary><p><b>Coordinator:</b> <span id="fullCoordinator"></span></p><p><b>Authority:</b> <span id="fullAuthority"></span></p><p><b>Can continue if prerequisites are met:</b> <span id="fullCan"></span></p><p><b>Wait or escalate:</b> <span id="fullWait"></span></p><p><b>Evidence:</b> <span id="fullEvidence"></span></p><p><b>Condition:</b> <span id="fullCaveat"></span></p><p><b>Current phase:</b> <span id="fullPhase"></span></p><p>*Only independent work with its own valid inputs, decisions and authorizations.</p></details>
@@ -260,7 +260,14 @@ function renderException(){
  const example=teachingScenarios[exceptionKind][scenarioSelections[exceptionKind]]; const phaseGuides=[['Problem confirmed','Detect establishes exactly what is missing and the potential delivery impact. It does not authorize or stop unrelated work.'],['Resolution assigned','Route identifies the decision authority and coordination owner. No blocked task is released by routing alone.'],['Execution boundaries','Split names the specific activity that may proceed if ready, and the dependent activity that must wait.'],['Evidence & release','Verify checks the missing evidence and applicable approvals before the affected task resumes.']];$('decisionHeading').textContent=phaseGuides[phase][0];$('decisionHint').textContent=phaseGuides[phase][1];$('resolution').hidden=phase!==3; 
  $('prevPhase').disabled=phase===0;$('nextPhase').textContent=phase===3?'Start over ↻':'Next →';renderResult();
 }
-function renderResult(){const m=exceptionModels[exceptionKind];const o=$('resolution');const selectedOutcome=phase===3?o.value:'pending';const output=phase===3?m.resolution[selectedOutcome]:'No decision confirmed yet. Keep affected work pending; independently ready work may proceed.';
+function renderResult(){const m=exceptionModels[exceptionKind];const o=$('resolution');const selectedOutcome=phase===3?o.value:'pending';const example=teachingScenarios[exceptionKind][scenarioSelections[exceptionKind]];
+ const phaseOutcomes=[
+  'Identified: '+example[1]+' Potential impact: '+example[2]+' Next: assign the appropriate resolver.',
+  'Resolution path established. Decision authority: '+exceptionLabels[exceptionKind].authority+'. SDM coordination: '+exceptionLabels[exceptionKind].coordinator+'. Next: assess task dependencies; this does not release blocked work.',
+  'May continue, only with existing prerequisites and authorization: '+example[3]+' Must wait: '+example[4]+' Next: obtain the missing evidence.',
+  ''
+ ];
+ const output=phase===3?m.resolution[selectedOutcome]:phaseOutcomes[phase];
  $('result').textContent=output;$('result').dataset.status=selectedOutcome;
 }
 $('exceptionKind').addEventListener('change',e=>{exceptionKind=e.target.value;phase=0;$('resolution').value='pending';renderException()});
