@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Emnify Q03 — Three-View Pipeline Simulator · v4.1 Review</title>
+<meta name="description" content="Evidence-bounded Task 2 Question 2 three-view process walkthrough; source scenario, proposed process, and conditional exception decisions.">
+<style>
+:root{--ink:#172a31;--sub:#52646a;--quiet:#73828a;--teal:#086d66;--tint:#eaf5f2;--line:#dbe3e2;--paper:#fff;--wash:#f6f8f7;--amber:#925b18;--amber-wash:#fff7e9}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:#e8eeed;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;-webkit-font-smoothing:antialiased}button{font:inherit;cursor:pointer}button:focus-visible{outline:3px solid #16a494;outline-offset:2px}
+button, [role="button"]{-webkit-tap-highlight-color:transparent}
+.shell{max-width:1480px;margin:24px auto;background:var(--paper);min-height:calc(100vh - 48px);box-shadow:0 18px 55px #18333312;border:1px solid #e4e9e7;padding:38px 46px 25px;display:flex;flex-direction:column;gap:0}
+.top{display:flex;align-items:flex-start;justify-content:space-between;gap:30px}
+.eyebrow{color:var(--teal);font-size:11px;letter-spacing:.15em;font-weight:800;margin:0 0 12px;text-transform:uppercase}
+h1{font-size:clamp(30px,3vw,43px);font-weight:720;letter-spacing:-.046em;line-height:1.08;margin:0}
+.lead{font-size:15px;line-height:1.45;color:var(--sub);margin:13px 0 0;max-width:760px}
+.top-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.segment{display:flex;gap:3px;padding:4px;border:1px solid var(--line);border-radius:9px;background:var(--wash)}
+.segment button{border:0;border-radius:6px;background:transparent;padding:10px 13px;white-space:nowrap;color:var(--sub);font-size:12px;font-weight:700}
+.segment button[aria-pressed=true]{background:white;box-shadow:0 1px 5px #1b393013;color:var(--ink)}
+.iconbtn{width:37px;height:37px;display:grid;place-items:center;border:1px solid var(--line);border-radius:8px;background:white;color:var(--sub)}
+.legend{display:flex;align-items:center;justify-content:space-between;gap:15px;margin:29px 0 12px}.section-label{font-size:11px;letter-spacing:.09em;font-weight:780;color:#526469;text-transform:uppercase}.legend-note{font-size:12px;color:var(--quiet)}
+.stages{display:grid;grid-template-columns:3fr 1fr 2fr;gap:12px;margin:0 0 8px}.stages span{font-size:10px;font-weight:750;letter-spacing:.1em;text-transform:uppercase;color:#758786;padding-left:2px}
+.flow{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+.step{border:1px solid var(--line);border-radius:9px;padding:14px 14px 13px;background:white;min-height:128px;text-align:left;display:flex;flex-direction:column;gap:11px;position:relative;transition:border-color .13s,background .13s}
+.step:not(:last-child):after{content:"›";position:absolute;z-index:3;left:calc(100% + 4px);top:45%;font-weight:800;color:#a8b7b3;font-size:20px}
+.step:hover{border-color:#8cbeb4}.step[aria-current=step]{background:var(--tint);border:1.5px solid var(--teal);padding:13.5px 13.5px 12.5px}
+.step-idx{font-size:10px;font-weight:850;letter-spacing:.1em;color:#667a7a}.step-name{font-size:16px;font-weight:730;letter-spacing:-.025em;line-height:1.23;min-height:38px}.step-owner{font-size:12px;color:var(--sub);line-height:1.3;margin-top:auto}.step-condition{font-size:10px;color:#8b6b41;font-weight:750}
+.lesson{display:flex;align-items:center;justify-content:space-between;gap:15px;margin:17px 0 12px;padding:10px 13px;border:1px solid #e0e7e5;background:#fbfcfb;border-radius:8px}
+.lesson p{margin:0;font-size:12px;color:var(--sub);line-height:1.4}.lesson strong{color:var(--ink)}.lesson .guide{white-space:nowrap;color:#62736f;font-weight:700;font-size:11px}
+.focus{display:grid;grid-template-columns:minmax(0,1.04fr) minmax(0,1fr);border:1px solid var(--line);border-radius:12px;min-height:247px;overflow:hidden;background:#fff}
+.narrative{padding:22px 25px 21px;background:var(--wash);border-right:1px solid var(--line)}
+.focus-eyebrow{display:flex;justify-content:space-between;align-items:center;gap:12px;color:var(--teal);font-size:10px;font-weight:850;letter-spacing:.085em;text-transform:uppercase}
+.narrative h2{font-size:27px;letter-spacing:-.038em;font-weight:730;margin:9px 0 9px;line-height:1.15}
+.explain{font-size:14px;color:#344a4e;line-height:1.52;margin:0 0 14px;max-width:660px}
+.branch-label{color:#617372;font-weight:750;font-size:10px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px}
+.branch{display:flex;gap:15px;align-items:stretch}.branch>div{flex:1;padding:11px 13px;border-radius:7px;background:#fff;border:1px solid var(--line)}.branch b{display:block;font-size:11px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px;color:#1a756d}.branch span{font-size:12px;line-height:1.4;color:#455b60}
+.narrative[data-exception=true]{background:var(--amber-wash)}.narrative[data-exception=true] .focus-eyebrow{color:var(--amber)}.narrative[data-exception=true] .branch b{color:var(--amber)}
+.criteria{padding:21px 23px 16px;min-height:247px;display:flex;flex-direction:column;overflow:hidden}
+.criteria-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.criteria-head strong{font-size:15px;font-weight:730}.detail-toggle{font-size:12px;font-weight:750;color:var(--teal);background:transparent;border:0;padding:5px 0}
+.criteria-items{overflow:auto;margin:13px -3px 0;padding-right:7px;max-height:188px;scrollbar-color:#cad9d5 transparent;scrollbar-width:thin}
+.criterion{display:grid;grid-template-columns:127px 1fr;gap:12px;padding:7px 0;border-bottom:1px solid #edf0ef}.criterion:last-child{border-bottom:0}.criterion dt{font-size:11px;font-weight:750;color:#637578}.criterion dd{font-size:12.7px;line-height:1.43;margin:0;color:#2b4148}
+.criteria:has(.detail-toggle[aria-expanded=true]) .criteria-items{max-height:none;overflow:visible}
+.criteria-note{font-size:10.5px;color:#6f7e7d;line-height:1.4;margin:auto 0 0;padding-top:9px}
+.checks{display:flex;align-items:center;justify-content:space-between;gap:17px;margin:19px 0 0;border-top:1px solid var(--line);padding-top:15px}.check{display:flex;align-items:flex-start;gap:11px;flex:1}.check-num{border:1px solid var(--line);border-radius:50%;min-width:24px;height:24px;display:grid;place-items:center;font-size:11px;color:#637774;font-weight:700}.check b{display:block;font-size:12px;margin-bottom:3px}.check small{font-size:11px;color:#778782;line-height:1.3;display:block}
+.footer{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-top:20px;margin-top:auto}.footer p{color:var(--quiet);font-size:10.5px;max-width:720px;line-height:1.5;margin:0}.nav{display:flex;align-items:center;gap:9px}.count{font-size:12px;color:var(--sub);font-variant-numeric:tabular-nums;margin-right:5px;white-space:nowrap}.nav button{font-size:12px;font-weight:700;line-height:1.15;background:white;border:1px solid var(--line);color:#29484a;padding:9px 13px;border-radius:7px}.nav button.primary{background:var(--teal);border-color:var(--teal);color:white}.nav button:disabled{opacity:.37;cursor:not-allowed}
+.shell:fullscreen{max-width:none;margin:0;min-height:100vh;padding:2.6vw 3.5vw 2vw;box-shadow:none}
+@media(max-width:1150px){.shell{margin:0;min-height:100vh;padding:28px 30px}.flow{gap:7px}.step{padding:12px 10px}.step-name{font-size:14px}.step-owner{font-size:11px}.narrative h2{font-size:23px}.focus{min-height:270px}}
+@media(max-width:840px){.shell{padding:22px 18px;gap:0}.top{flex-direction:column;gap:17px}.top-actions{justify-content:flex-start}.legend{margin:21px 0 11px}.flow{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.stages{display:none}.step{min-height:100px}.step:not(:last-child):after{display:none}.step-name{min-height:0}.lesson{align-items:flex-start}.lesson .guide{display:none}.focus{grid-template-columns:1fr}.narrative{border-right:0;border-bottom:1px solid var(--line);padding:19px 16px}.criteria{min-height:0;padding:17px 16px}.criteria-items{max-height:none}.checks{align-items:flex-start}.footer{flex-direction:column;align-items:flex-start}.nav{align-self:flex-end}}
+@media(max-width:510px){h1{font-size:31px}.lead{font-size:13px}.segment button{font-size:11px;padding:8px}.step{min-height:104px}.step-idx{font-size:9px}.step-name{font-size:12px}.step-owner{font-size:10px}.flow{gap:6px}.branch{flex-direction:column;gap:7px}.checks{flex-direction:column;gap:12px}.criterion{grid-template-columns:98px 1fr}.criterion dd{font-size:12px}.footer p{max-width:300px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
+
+/* v4: logic-first extension. Visual system deliberately largely retained for later design review. */
+.shell{max-width:1510px;min-height:calc(100vh - 48px)}
+.top-actions .segment{flex-wrap:wrap}.segment button[aria-selected=true]{background:#fff;box-shadow:0 1px 5px #1b393013;color:var(--ink)}
+.view{margin-top:19px}.view[hidden]{display:none!important}
+.view-header{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:16px}
+.view-header h2{font-size:22px;margin:0 0 4px;letter-spacing:-.027em}
+.view-header p{font-size:12.5px;max-width:820px;color:var(--sub);margin:0;line-height:1.55}
+.fact-tag{display:inline-block;border:1px solid var(--line);background:#f4f8f7;border-radius:5px;font-size:10px;font-weight:850;letter-spacing:.06em;color:var(--teal);padding:6px 8px;white-space:nowrap}
+.case-lanes{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.lane{border:1px solid var(--line);border-radius:11px;padding:18px;background:#fff}
+.lane h3{font-size:16px;letter-spacing:-.02em;margin:0 0 12px}
+.case-sequence{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-bottom:13px}
+.case-pill{border-radius:6px;background:var(--wash);border:1px solid var(--line);padding:9px 10px;font-size:11px;font-weight:650;line-height:1.4}
+.case-arrow{color:#80928e;font-weight:750}.case-text{font-size:12px;line-height:1.5;color:#42575b;margin:0}
+.signal{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;margin-top:13px}
+.signal article{padding:13px 14px;border:1px solid #e9ddd1;background:#fffaf2;border-radius:9px}
+.signal strong{display:block;color:#835317;font-size:12px;margin-bottom:6px}.signal span{font-size:11.5px;line-height:1.45;display:block;color:#5f6258}
+.unknowns{margin-top:13px;border:1px solid var(--line);border-radius:9px;padding:13px 15px;background:#fafcfb;color:#52686a;font-size:12px;line-height:1.5}
+.unknowns b{color:var(--ink)}
+.flow-title{margin:20px 0 8px}.flow-title .section-label{font-size:11px}
+.action-row{display:flex;justify-content:space-between;align-items:center;gap:13px;margin:10px 0 0}
+.action-row .muted{font-size:11px;color:var(--quiet)}
+.trace{display:flex;gap:8px;align-items:center;color:var(--sub);font-size:12px;font-weight:750}
+.small-button{border:1px solid var(--line);background:#fff;color:var(--teal);font-size:12px;padding:8px 10px;border-radius:7px;font-weight:750}
+.exception-tools{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:14px 0}
+.exception-tools label{font-size:12px;font-weight:750;color:var(--sub)}
+.exception-tools select{border:1px solid #cbd8d5;background:#fff;border-radius:7px;padding:10px 12px;min-width:260px;max-width:100%;font-size:13px;color:var(--ink)}
+.method-flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-bottom:13px}
+.method-step{border:1px solid var(--line);background:white;border-radius:9px;text-align:left;padding:11px 12px;min-height:66px}
+.method-step[aria-current=step]{border-color:var(--teal);background:var(--tint)}
+.method-step .phase-num{font-size:10px;color:var(--teal);font-weight:800;display:block;margin-bottom:5px}
+.method-step .phase-name{font-size:12px;font-weight:740;line-height:1.3;display:block}
+.exception-focus{display:grid;grid-template-columns:1.15fr .85fr;gap:0;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:white}
+.exception-focus .left{background:var(--wash);padding:21px 23px}
+.exception-focus .right{padding:20px 22px;border-left:1px solid var(--line)}
+.exception-focus h3{font-size:22px;margin:6px 0 10px;letter-spacing:-.028em}
+.exception-focus p{font-size:13px;line-height:1.55;color:#3c5357;margin:0 0 12px}
+.line-label{display:block;color:#69817e;font-size:10px;font-weight:820;letter-spacing:.08em;margin-bottom:7px;text-transform:uppercase}
+.owner-note{font-size:12px;color:var(--sub);padding:10px 11px;background:white;border:1px solid var(--line);border-radius:7px;margin-top:10px}
+.next-split{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}
+.next-split>div{background:#fff;border:1px solid var(--line);padding:11px 12px;border-radius:7px}
+.next-split b{display:block;font-size:10.5px;letter-spacing:.06em;color:var(--teal);margin-bottom:6px}
+.next-split p{font-size:11.5px;margin:0}
+.outcome-row{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.outcome-row select{background:#fff;border:1px solid #cedbd6;color:var(--ink);border-radius:7px;padding:9px 11px;width:100%;margin-bottom:9px}
+.outcome-output{border:1px solid #d8e5de;background:#f7faf8;color:#355451;border-radius:7px;padding:11px;font-size:12px;line-height:1.5;min-height:64px}
+.proposed-focus{margin-top:12px}
+.info-foot{font-size:11px;line-height:1.5;color:var(--quiet);border-top:1px solid var(--line);margin-top:16px;padding-top:14px}
+.nav{flex-wrap:wrap}.control-panel{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:13px}
+button[aria-selected=true],button[aria-current=step]{cursor:pointer}
+@media(max-width:1050px){.case-lanes,.exception-focus{grid-template-columns:1fr}.exception-focus .right{border-left:0;border-top:1px solid var(--line)}.signal{grid-template-columns:1fr 1fr 1fr}.top{flex-direction:column}.method-flow{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:670px){.top-actions{justify-content:flex-start}.segment{width:100%}.segment button{flex:1;white-space:normal}.case-lanes,.signal,.next-split{grid-template-columns:1fr}.method-flow{grid-template-columns:repeat(2,minmax(0,1fr))}.shell{padding:18px 14px}.exception-focus .left,.exception-focus .right{padding:17px 15px}.view-header{flex-direction:column}.case-sequence{gap:5px}.case-pill{padding:7px}.flow{grid-template-columns:repeat(2,minmax(0,1fr))}.footer{margin-top:20px}}
+
+/* v4.2 — Requested editorial removals: lean header and compact case evidence label. */
+.top .eyebrow{margin-bottom:0}
+.view-header-compact{justify-content:flex-end;margin-bottom:10px}
+.view-selector{margin-top:16px}
+/* v4.1 — Discoverable three-view navigator. This is an information-architecture fix, not a visual rebrand. */
+.top{align-items:center}.top-actions{align-self:flex-start;padding-top:3px}
+.view-selector{margin-top:27px;padding-top:18px;border-top:1px solid var(--line)}
+.view-selector-heading{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:13px}
+.view-selector-eyebrow{font-size:11px;font-weight:830;letter-spacing:.105em;color:var(--teal);margin:0 0 5px}
+.view-selector-hint{font-size:12px;line-height:1.4;color:var(--sub);margin:0}
+.show-all-btn{background:#fff;border:1px solid #b4c9c4;border-radius:7px;padding:9px 13px;color:#225c56;font-size:12px;font-weight:770;white-space:nowrap}
+.show-all-btn:hover,.show-all-btn[aria-pressed=true]{background:var(--tint);border-color:var(--teal)}
+.view-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.view-tab{min-width:0;min-height:112px;position:relative;display:flex;flex-direction:column;gap:7px;text-align:left;border:1px solid #cbd8d5;border-radius:9px;padding:15px 17px 14px;background:#fff;color:var(--ink);transition:background .15s,border-color .15s,box-shadow .15s}
+.view-tab:hover{border-color:#6bafa3;background:#f7faf9}
+.view-tab.is-active,.view-tab[aria-pressed=true]{border:2px solid var(--teal);padding:14px 16px 13px;background:#eaf6f2;box-shadow:0 4px 16px #086d6611}
+.view-tab-num{font-size:10px;color:#4b7c75;font-weight:850;letter-spacing:.07em}
+.view-tab strong{font-size:18px;font-weight:770;letter-spacing:-.026em;line-height:1.08}
+.view-tab>span:not(.view-tab-num):not(.view-tab-arrow){font-size:12px;color:var(--sub)}
+.view-tab-arrow{position:absolute;right:16px;top:15px;font-size:18px;color:#5c8d82}
+.view-status{font-size:10px;font-weight:800;letter-spacing:.095em;color:var(--teal);margin:15px 0 0;border-bottom:1px solid var(--line);padding-bottom:10px}
+.view{margin-top:19px}
+.js-ready .view[hidden]{display:none!important}
+.js-ready .view:not([hidden])+.view:not([hidden]){border-top:2px solid var(--line);padding-top:24px;margin-top:34px}
+@media(max-width:840px){.view-tab{min-height:98px;padding:12px}.view-tab.is-active,.view-tab[aria-pressed=true]{padding:11px}.view-tab strong{font-size:15px}.view-tab>span:not(.view-tab-num):not(.view-tab-arrow){font-size:11px}.view-tab-arrow{display:none}}
+@media(max-width:600px){.view-nav{grid-template-columns:1fr;gap:7px}.view-tab{min-height:0;gap:3px;padding:10px 13px}.view-tab.is-active,.view-tab[aria-pressed=true]{padding:9px 12px}.view-tab strong{font-size:16px}.view-selector-heading{align-items:flex-start;flex-direction:column}.show-all-btn{align-self:flex-start}.top-actions{position:absolute;right:14px;top:16px}.top{padding-right:45px}.view-selector{margin-top:23px}}
+@media print{body{background:#fff}.shell{box-shadow:none;border:0;margin:0}.view-selector{display:none!important}.view{display:block!important;page-break-inside:avoid;border-top:1px solid #ccc;padding-top:15px!important}.footer{page-break-inside:avoid}}
+</style></head><body>
+<main class="shell" id="shell">
+ <header class="top">
+  <div><p class="eyebrow">Q03 · Task 2 / Question 2 · Logic review v4.2</p></div>
+  <div class="top-actions"><button class="iconbtn" id="fullscreen" type="button" aria-label="Toggle full screen" title="Full screen">⛶</button></div>
+ </header>
+ <section class="view-selector" aria-labelledby="viewsLabel">
+   <div class="view-selector-heading"><div><p class="view-selector-eyebrow" id="viewsLabel">THREE VIEWS · ONE OPERATIONAL SYSTEM</p><p class="view-selector-hint">Select a perspective to explore it. The three options below are interactive.</p></div>
+   <button type="button" class="show-all-btn" id="showAll" aria-pressed="false" aria-controls="view-current view-proposed view-exceptions">Show all three ↓</button></div>
+   <nav class="view-nav" aria-label="Three analysis views">
+     <button type="button" class="view-tab" id="tab-current" aria-controls="view-current" aria-pressed="true" data-view="current"><span class="view-tab-num">01 / AS-IS</span><strong>Current case</strong><span>What Emnify describes</span><span class="view-tab-arrow" aria-hidden="true">↗</span></button>
+     <button type="button" class="view-tab" id="tab-proposed" aria-controls="view-proposed" aria-pressed="false" data-view="proposed"><span class="view-tab-num">02 / TO-BE</span><strong>Proposed process</strong><span>Six steps and operating criteria</span><span class="view-tab-arrow" aria-hidden="true">↗</span></button>
+     <button type="button" class="view-tab" id="tab-exceptions" aria-controls="view-exceptions" aria-pressed="false" data-view="exceptions"><span class="view-tab-num">03 / DECISIONS</span><strong>Exception handling</strong><span>Four cases and resolution logic</span><span class="view-tab-arrow" aria-hidden="true">↗</span></button>
+   </nav>
+   <p class="view-status" id="viewStatus" aria-live="polite">VIEW 1 OF 3 · Current case</p>
+ </section>
+ <section class="view" id="view-current" role="region" aria-labelledby="tab-current">
+  <div class="view-header view-header-compact"><span class="fact-tag">CASE-DESCRIBED · NOT VERIFIED SOP</span></div>
+  <div class="case-lanes">
+   <article class="lane"><h3>Commercial agreement → delivery</h3><div class="case-sequence">
+    <span class="case-pill">Sales drafts contract<br><small>Salesforce</small></span><span class="case-arrow">›</span>
+    <span class="case-pill">Pricing approval*<br>Sales Ops review</span><span class="case-arrow">›</span>
+    <span class="case-pill">Signed contract</span><span class="case-arrow">›</span>
+    <span class="case-pill">Service Delivery</span>
+   </div><p class="case-text"><b>Where clarification arises:</b> If the signed terms contain information that is missing or unclear, Service Delivery requests clarification from Sales before proceeding.</p>
+   <p class="case-text" style="margin-top:9px"><b>*Existing boundaries:</b> Pricing is conditional and must authorize eligible below-threshold terms before commitment; Sales Ops already reviews before the contract is sent.</p></article>
+   <article class="lane"><h3>SIM orders → physical shipment</h3><div class="case-sequence">
+    <span class="case-pill">Customer order<br>Portal / other route</span><span class="case-arrow">›</span>
+    <span class="case-pill">Finance processing*<br>some orders</span><span class="case-arrow">›</span>
+    <span class="case-pill">Logistics<br>fulfil & ship</span>
+   </div><p class="case-text"><b>*Conditional:</b> The case states that some orders need manual Finance processing. It does not establish that all alternative channels need Finance or that manual processing is inherently inefficient.</p>
+   <p class="case-text" style="margin-top:9px"><b>Separate outcome:</b> Physical dispatch is not proof of SIM provisioning, working connectivity or customer-verified first value.</p></article>
+  </div>
+  <div class="legend"><span class="section-label">Consequences stated in Task 3</span><span class="legend-note">Observed descriptions · Not quantified</span></div>
+  <div class="signal"><article><strong>Repeated clarifications</strong><span>Service Delivery Managers report significant post-signature clarification and rework.</span></article><article><strong>Onboarding delays</strong><span>Customer onboarding waits while contract questions are resolved.</span></article><article><strong>Cross-team tension</strong><span>SDMs experience frustration; Sales considers bespoke flexibility necessary to win business.</span></article></div>
+  <div class="unknowns"><b>Not established by the case:</b> An exact RACI or SOP; incident frequency; the dominant root cause; the content of the Sales Ops pre-send review; conditional Finance rules; technical decision authority; whether a proposed handover checklist would improve results. These require internal validation.</div>
+ </section>
+ <section class="view" id="view-proposed" role="region" aria-labelledby="tab-proposed">
+  <div class="view-header"><div><h2>Proposed operating model</h2><p>A selected contracted physical-SIM route. Nodes represent a useful analytical path, not a mandatory company-wide sequence; some controls or activities may overlap.</p></div><span class="fact-tag">PROPOSED · SUBJECT TO VALIDATION</span></div>
+  <div class="stages" aria-hidden="true"><span>J3 · Commercial commitment</span><span>J3 → J4 · Handover</span><span>J4 · Physical SIM fulfillment</span></div>
+  <div class="flow" id="flow" aria-label="Six process steps"></div>
+  <div class="lesson"><p><strong>Control logic:</strong> Sales Ops retains its existing review; Pricing approval is prior and conditional; Finance is involved only where its actual rule applies. An accepted handoff is not automatically a complete implementation.</p><span class="guide">Select any step</span></div>
+  <div class="focus proposed-focus">
+   <section class="narrative" id="narrative"><div class="focus-eyebrow"><span id="focusIndex"></span><span id="caseLabel">PROPOSED PATH</span></div>
+    <h2 id="focusTitle"></h2><p class="explain" id="focusExplain"></p><div class="branch-label">What this stage distinguishes</div>
+    <div class="branch"><div><b id="branchATitle"></b><span id="branchAText"></span></div><div><b id="branchBTitle"></b><span id="branchBText"></span></div></div>
+   </section>
+   <section class="criteria"><div class="criteria-head"><strong>Operating criteria</strong><button type="button" class="detail-toggle" id="toggleDetails" aria-expanded="false">View all criteria ↓</button></div>
+    <dl class="criteria-items" id="criteriaItems"></dl><p class="criteria-note" id="criteriaNote"></p></section>
+  </div>
+  <div class="control-panel"><span class="trace" id="count">01 / 06</span><div class="nav"><button id="prev" type="button">← Previous</button><button class="primary" id="next" type="button">Next →</button></div></div>
+  <div class="checks"><div class="check"><span class="check-num">1</span><div><b>Information complete</b><small>Required inputs exist.</small></div></div><div class="check"><span class="check-num">2</span><div><b>Ready to execute</b><small>Relevant dependencies and decisions allow this action.</small></div></div><div class="check"><span class="check-num">3</span><div><b>Completed / accepted</b><small>Evidence supports result and next action.</small></div></div></div>
+ </section>
+ <section class="view" id="view-exceptions" role="region" aria-labelledby="tab-exceptions">
+  <div class="view-header"><div><h2>How an exception is handled</h2><p>Select a problem, then follow the decision pathway. These are proposed response patterns, not confirmed Emnify procedures or real incident records.</p></div><span class="fact-tag">ILLUSTRATIVE RESPONSE · NOT SOP</span></div>
+  <div class="exception-tools"><label for="exceptionKind">Exception type</label><select id="exceptionKind">
+    <option value="missing">Missing or ambiguous implementation detail</option>
+    <option value="technical">Technical feasibility / configuration</option>
+    <option value="pricing">Required Pricing approval / evidence</option>
+    <option value="finance">Conditional SIM-order Finance step</option>
+   </select><span class="legend-note" id="exceptionContext"></span>
+  </div>
+  <div class="method-flow" id="methodFlow" aria-label="Exception handling phases"></div>
+  <div class="exception-focus">
+    <div class="left"><span class="line-label" id="phaseLabel"></span><h3 id="phaseTitle"></h3><p id="phaseText"></p>
+      <div class="owner-note"><b>Next-action coordinator:</b> <span id="coordinator"></span><br><b>Authorized decision:</b> <span id="authority"></span></div>
+      <div class="next-split"><div><b>MAY CONTINUE · IF INDEPENDENT</b><p id="canContinue"></p></div><div><b>MUST WAIT / ESCALATE</b><p id="mustWait"></p></div></div>
+    </div>
+    <div class="right"><span class="line-label">Resolution and evidence</span><p id="evidenceNeeded"></p>
+      <div class="outcome-row"><label for="resolution" class="line-label">Illustrative decision outcome</label>
+        <select id="resolution" disabled><option value="pending">Pending / not yet established</option><option value="cleared">Authorized decision or required input confirmed</option><option value="blocked">Rejected, infeasible or disputed</option></select>
+        <div id="outcomeOutput" class="outcome-output" aria-live="polite"></div>
+      </div>
+      <p class="criteria-note" id="exceptionCaveat"></p>
+    </div>
+  </div>
+  <div class="control-panel"><span class="trace" id="excCount">01 / 04</span><div class="nav"><button id="excPrev" type="button">← Previous</button><button class="primary" id="excNext" type="button">Next phase →</button></div></div>
+  <div class="unknowns"><b>Core method:</b> Detect → route the decision to its authority → separate dependent from independent work → verify the actual decision and readiness. A new form does not replace a specialist decision, and no exception bypasses an existing required control.</div>
+ </section>
+ <footer class="info-foot">Evidence boundary: “Current case” reflects only Task 2/3 scenario statements; “Proposed process” and “Exceptions” are candidate designs. Existing Sales Ops review and conditional Pricing/Finance controls are preserved. Physical SIM shipping does not prove customer connectivity/value. This version is a review artifact; the S7-linked original remains unchanged until approval.</footer>
+</main>
+<script>
+'use strict';
+const steps = [
+ {id:'PR06',title:'Draft contract',owner:'Sales',tag:'',details:{owner:'Sales prepares the commercial agreement; other specialist input depends on the terms.',trigger:'The opportunity enters the contracting stage.',inputs:'Commercial terms, price, scope and relevant customer requirements.',complete:'A draft agreement is ready for the required approval and review steps.',handoff:'The matching terms move to applicable Pricing approval and the existing Sales Ops review.',caveat:'Case-described PR06; exact internal draft acceptance is not provided.'}},
+ {id:'PR07 · PR08',title:'Approve & review',owner:'Pricing* · Sales Ops',tag:'* IF NEEDED',details:{owner:'Pricing authorizes below-threshold offers where its rule applies. Sales Ops performs its separate existing pre-send review.',trigger:'A draft is ready; Pricing is triggered only by the applicable price condition.',inputs:'Current draft and relevant policy, plus evidence of any required prior authorization.',complete:'Applicable Pricing decision is valid before customer commitment; Sales Ops has performed its pre-send review.',handoff:'The approved/reviewed version can proceed to the customer under the organization’s actual rules.',caveat:'Both controls are described in the case. Thresholds, enforcement and exact review scope remain unknown.'}},
+ {id:'PR09',title:'Sign agreement',owner:'Sales · Customer',tag:'',details:{owner:'Customer signs; Sales manages the commercial transition. Exact document custodianship is not established.',trigger:'Commercial terms are ready for customer acceptance.',inputs:'Agreed contract version and any applicable prior approvals.',complete:'Signed agreement is available for the agreed contracted route.',handoff:'Sales passes signed terms and operational context to Service Delivery; signed ≠ ready to implement.',caveat:'The official scenario includes a signature before the contracted handover; not every customer journey must follow this branch.'}},
+ {id:'PR10',title:'Accept handover',owner:'Sales → Service Delivery',tag:'KEY GATE',details:{owner:'Sales supplies the agreed commitment; Service Delivery assesses next-step executability. Decision rights remain with competent owners.',trigger:'Signed commitment is transferred to Service Delivery.',inputs:'Signed version, agreed scope, required technical details, customer dependencies and material open decisions.',complete:'The next executable action and any unresolved dependencies are distinguished and assigned.',handoff:'Service Delivery accepts an actionable next step. Missing/ambiguous detail is routed to Sales; technical decisions to a competent owner, without universally blocking unrelated work.',caveat:'The handover itself is case-described. Formal acceptance criteria and task allocation are proposed, not verified internal practices.'}},
+ {id:'PR12 · PR13',title:'Process SIM order',owner:'Customer · Finance*',tag:'* IF NEEDED',details:{owner:'Customer uses the Portal or a legitimate alternative route. Finance processes only those orders to which its rule applies.',trigger:'An applicable customer SIM order is placed.',inputs:'Order specification, relevant account and shipment information, and route-specific release conditions.',complete:'The order reaches an accepted status for applicable fulfillment; any required Finance handling is completed.',handoff:'A valid order is passed to Logistics, with clear accepted next action for physical shipment.',caveat:'The case does not say that alternate channels automatically require Finance or that manual steps necessarily cause delays.'}},
+ {id:'PR14',title:'Fulfil & ship',owner:'Logistics',tag:'',details:{owner:'Logistics specialists execute physical SIM fulfillment and dispatch.',trigger:'An executable physical SIM order reaches Logistics.',inputs:'Accepted order, card/quantity, destination, and Finance processing evidence where applicable.',complete:'Physical SIM order is fulfilled and shipment is verified at the relevant dispatch milestone.',handoff:'Shipping status goes to the appropriate downstream actor/customer communicator. Dispatch is not proof of activation, connectivity or customer value.',caveat:'Later provisioning/connectivity and first-use milestones are distinct and not implied by shipment.'}}
+];
+
+const $=id=>document.getElementById(id);
+const summaries=[
+ {purpose:'Sales prepares the agreement, capturing the terms and scope that the next decision owners will review.',a:'Draft prepared',at:'Commercial scope, terms and relevant customer needs collected.',b:'Not yet a commitment',bt:'Applicable Pricing and Sales Ops controls still need to be addressed.'},
+ {purpose:'Two separate controls: Pricing grants conditional prior authorization; Sales Ops performs its existing pre-send review.',a:'Applicable checks met',at:'Required Pricing approval is valid before commitment, and Sales Ops review is performed.',b:'Do not duplicate',bt:'Neither approval ownership nor review scope is transferred to Service Delivery.'},
+ {purpose:'The customer accepts the contractual version. The signature is a milestone, not proof of technical readiness.',a:'Signed terms available',at:'The relevant signed scope is ready for transfer to Service Delivery.',b:'Implementation context',bt:'Open decisions and customer dependencies still need to be made actionable.'},
+ {purpose:'Service Delivery accepts an executable next action, not every unresolved question or specialist decision.',a:'Executable work',at:'Identify what can begin with its present inputs and authorizations.',b:'Unresolved dependencies',bt:'Route ambiguities to Sales and technical questions to the competent decision owner.'},
+ {purpose:'Use the customer Portal or another legitimate SIM-order route, with Finance only when its actual rule applies.',a:'Order accepted',at:'Route-specific inputs and any required Finance processing are complete.',b:'Avoid false assumptions',bt:'An alternate channel alone does not imply a Finance hold.'},
+ {purpose:'Logistics fulfills and dispatches a physical SIM order that is ready for shipment.',a:'Dispatch verified',at:'Track the relevant physical fulfillment milestone.',b:'Beyond shipping',bt:'Provisioning, working connectivity and first customer value must be checked separately.'}
+];
+const exceptionModels={
+ missing:{context:'PR10 · After a signed contract; Task 2/3 signal',coordinator:'SDM coordinates the actionable next step; Sales handles commercial clarification.',authority:'Sales clarifies agreed commitments; specialist approval only where its domain requires it.',can:'A genuinely independent implementation or physical-order preparation task whose own inputs and approvals are satisfied.',wait:'Any task that relies on the missing/ambiguous signed scope or customer requirement.',evidence:'Signed contract and version, exact missing field or ambiguous clause, Sales clarification, assigned next action, and confirmation that dependent work is ready.',caveat:'The case supports clarifications and delays; it does not prove a missing checklist is the principal cause.',phases:[['Detect the gap','Identify the precise missing or ambiguous requirement and which implementation tasks depend on it.'],['Clarify with Sales','Ask for a consolidated commercial interpretation, not a new general Sales Ops approval. Engage a specialist if there is a separate technical issue.'],['Split executable work','Maintain independent work only where all its own conditions are met; keep the affected task on hold with a named next-action owner.'],['Verify and resume','Check the clarification against the signed commitment, update relevant readiness and customer expectations, then proceed only where executable.']],resolution:{pending:'Affected tasks stay pending; maintain an owner, next check and accurate customer status. No assumed release.',cleared:'After a clear, authorized interpretation and verified prerequisites, release only the affected executable tasks; record the clarification.',blocked:'If the proposed interpretation conflicts with the signed commitment, route the commercial revision or dispute to authorized Sales/legal owners; do not let an SDM rewrite terms.'}},
+ technical:{context:'PR10 · Illustrative technical setup dependency',coordinator:'Service Delivery Manager tracks readiness and the relevant customer dependency.',authority:'Competent technical owner (e.g., Solutions Engineering); Sales clarifies commercial terms if needed.',can:'Physical SIM-order preparation only when genuinely independent of the unresolved technical setup and separately authorized.',wait:'Configuration, provisioning or setup work that depends on the unresolved feasibility decision.',evidence:'Exact technical requirement, proposed configuration, feasibility response by authorized owner, affected dependencies and new readiness check.',caveat:'A technical mismatch is one possible cause, not established as the actual cause in the employer scenario.',phases:[['Detect technical uncertainty','Mark the exact service requirement or configuration that cannot be executed reliably with known inputs.'],['Send to technical authority','The specialist assesses feasibility; Sales is involved only for interpreting or changing commercial promises. SDM does not approve feasibility.'],['Protect independent work','Allow separately ready and authorized work to progress; do not imply that shipping a SIM resolves connectivity.'],['Verify technical readiness','Apply the actual technical decision, re-evaluate the affected step and provide a truthful customer update.']],resolution:{pending:'Technical setup remains blocked; only independent and authorized preparation may continue.',cleared:'Once the competent technical owner confirms feasibility and conditions, the SDM can coordinate the newly executable step; success still requires later validation.',blocked:'If infeasible, do not start the affected work. Escalate commercial options to Sales and the appropriate authorized parties; adjust commitments only through proper agreement.'}},
+ pricing:{context:'PR07 · Before customer commitment; distinct control risk',coordinator:'Sales / applicable control-follow-up owner; Service Delivery does not take over Pricing compliance.',authority:'Pricing team grants the required prior approval for qualifying terms.',can:'Drafting and other preparatory activity that does not constitute an unauthorized customer commitment.',wait:'Sending/signing the below-threshold commitment until required prior Pricing authorization is valid and evidenced.',evidence:'Applicable price threshold, contract version, requested terms, approval decision and timestamp, and matching committed terms.',caveat:'Missing approval and missing evidence of an approval are different. If the commitment is already made, do not label a later approval as prior authorization.',phases:[['Check applicability','Determine whether the actual threshold rule applies and whether valid prior approval evidence is present.'],['Route to Pricing','Pricing decides qualifying price exceptions; verify the approved terms and version match the proposed customer commitment.'],['Protect the control','Noncommitting draft preparation can continue; no team bypasses mandatory prior authorization.'],['Verify before commitment','If approval was required, confirm valid prior authorization before signing/sending under actual policy. Handle discovered past deviations separately.']],resolution:{pending:'If approval is required but pending, the affected customer commitment cannot be treated as authorized.',cleared:'Proceed only if a valid Pricing decision existed before commitment and matches the terms. This simulator does not create approval.',blocked:'Rejected/unapproved below-threshold terms must be revised or escalated through commercial governance. For an already signed deviation, escalate remediation; never retroactively claim prior approval.',not_required:'If the threshold rule is confirmed inapplicable, there is no Pricing approval gate for that offer; the existing Sales Ops review and other applicable controls still stand.'}},
+ finance:{context:'PR12 / PR13 / PR14 · Specific SIM-order route',coordinator:'Order-channel owner coordinates; Logistics accepts only an order ready for physical fulfillment.',authority:'Finance determines and performs its required processing for qualifying orders; Logistics owns physical dispatch.',can:'Orders/routes that do not require Finance, or independent order preparation meeting all release conditions.',wait:'Physical fulfillment of a qualifying order until its required Finance handling and Logistics acceptance are completed.',evidence:'Order route and details, actual condition triggering Finance, processing confirmation when applicable, order acceptance and shipment-readiness evidence.',caveat:'The scenario states only SOME orders require manual Finance processing. Alternate channels and manual work are not proof of waste.',phases:[['Identify the order route','Confirm Portal or other valid channel and the specific real rule that may trigger Finance processing.'],['Route only when required','If Finance applies, Finance processes the qualifying order; otherwise do not invent a universal Finance gate.'],['Separate eligible work','Prepare valid order details and independent tasks; avoid dispatch before any required release and Logistics acceptance.'],['Verify shipment handoff','Confirm required order processing, Logistics acceptance and physical dispatch milestone; track service readiness separately.']],resolution:{pending:'If Finance applies and processing is pending, the affected order cannot be released for physical shipment.',cleared:'Once applicable Finance requirements and Logistics readiness are verified, the physical order may proceed. Dispatch is not activation.',blocked:'If the order cannot be processed/released, return it to the correct order or Finance owner for correction; do not bypass a mandatory check.',not_required:'If the actual Finance condition does not apply, no Finance step is imposed solely because the route differs from the Portal. Logistics still checks that the physical order is ready.'}}
+};
+let activeView='current',selected=3,expanded=false,exceptionKind='technical',phase=0;
+// Three-view navigator. The previous compact top-right tabs made the views easy to miss.
+// "Show all three" renders all panels in sequence; no changes to analytical data or routing logic.
+let showAllViews=false;
+const viewNames={current:'Current case',proposed:'Proposed process',exceptions:'Exception handling'};
+function showView(which,{all=false}={}){
+ if(!viewNames[which])which='current';
+ activeView=which;showAllViews=all;
+ for(const name of ['current','proposed','exceptions']){
+   $('view-'+name).hidden=!all && name!==which;
+   const active=name===which && !all;
+   $('tab-'+name).setAttribute('aria-pressed',String(active));
+   $('tab-'+name).classList.toggle('is-active',active);
+ }
+ $('showAll').setAttribute('aria-pressed',String(all));
+ $('showAll').textContent=all?'Show one view ↑':'Show all three ↓';
+ $('viewStatus').textContent=all?'ALL 3 VIEWS ARE VISIBLE BELOW · Scroll to compare':`VIEW ${String(['current','proposed','exceptions'].indexOf(which)+1)} OF 3 · ${viewNames[which]}`;
+ if(which==='proposed' || all)renderProposed();
+ if(which==='exceptions' || all)renderException();
+}
+for(const b of document.querySelectorAll('[data-view]'))b.addEventListener('click',()=>showView(b.dataset.view));
+$('showAll').addEventListener('click',()=>showView(activeView,{all:!showAllViews}));
+function drawNodes(){return steps.map((s,i)=>`<button type="button" class="step" data-i="${i}" aria-current="${i===selected?'step':'false'}" aria-label="Inspect ${s.id} ${s.title}"><span class="step-idx">${s.id}</span><span class="step-name">${s.title}</span><span class="step-owner">${s.owner}</span></button>`).join('')}
+function renderProposed(){ $('flow').innerHTML=drawNodes();$('flow').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{selected=Number(b.dataset.i);expanded=false;renderProposed()}));let s=steps[selected],x=summaries[selected];
+ $('focusIndex').textContent=`STEP ${String(selected+1).padStart(2,'0')} / 06 · ${s.id}`;$('caseLabel').textContent='PROPOSED / CONDITIONAL';$('focusTitle').textContent=s.title;$('narrative').dataset.exception='false';$('focusExplain').textContent=x.purpose;
+ $('branchATitle').textContent=x.a;$('branchAText').textContent=x.at;$('branchBTitle').textContent=x.b;$('branchBText').textContent=x.bt;
+ const short=[['Responsible',s.owner],['Starts when',s.details.trigger],['Done when',s.details.complete]];
+ const full=[['Owner & decision authority',s.details.owner],['Trigger',s.details.trigger],['Inputs & dependencies',s.details.inputs],['Completion criteria',s.details.complete],['Next handoff & readiness',s.details.handoff]];
+ const dl=$('criteriaItems');dl.replaceChildren();for(const [name,val] of expanded?full:short){const div=document.createElement('div');div.className='criterion';const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=name;dd.textContent=val;div.append(dt,dd);dl.append(div)}
+ $('criteriaNote').textContent=expanded?'Evidence boundary: '+s.details.caveat:'Open all criteria to see the full original step definition and evidence boundary.';
+ $('toggleDetails').textContent=expanded?'Show summary ↑':'View all criteria ↓';$('toggleDetails').setAttribute('aria-expanded',String(expanded));$('count').textContent=`${String(selected+1).padStart(2,'0')} / 06`;
+ $('prev').disabled=selected===0;$('next').textContent=selected===5?'Start again ↺':'Next →';}
+$('toggleDetails').addEventListener('click',()=>{expanded=!expanded;renderProposed()});$('prev').addEventListener('click',()=>{if(selected>0){selected--;expanded=false;renderProposed()}});$('next').addEventListener('click',()=>{selected=(selected+1)%steps.length;expanded=false;renderProposed()});
+function renderException(){const m=exceptionModels[exceptionKind];$('exceptionKind').value=exceptionKind;$('exceptionContext').textContent=m.context;const opt=$('resolution').querySelector('[value=not_required]');if(opt)opt.remove();if(exceptionKind==='pricing'||exceptionKind==='finance'){$('resolution').add(new Option('Control not applicable under actual rule','not_required'))}if(phase!==3)$('resolution').value='pending';$('resolution').disabled=phase!==3;
+ const phases=['Detect & classify','Route decision','Split the work','Verify & continue'];$('methodFlow').innerHTML=phases.map((name,i)=>`<button type="button" class="method-step" data-phase="${i}" aria-current="${phase===i?'step':'false'}"><span class="phase-num">0${i+1}</span><span class="phase-name">${name}</span></button>`).join('');$('methodFlow').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{phase=Number(b.dataset.phase);renderException()}));
+ $('phaseLabel').textContent=`PHASE ${phase+1} OF 4 · ${exceptionKind.toUpperCase()} EXAMPLE`;$('phaseTitle').textContent=m.phases[phase][0];$('phaseText').textContent=m.phases[phase][1];$('coordinator').textContent=m.coordinator;$('authority').textContent=m.authority;
+ $('canContinue').textContent=m.can;$('mustWait').textContent=m.wait;$('evidenceNeeded').textContent=m.evidence;$('exceptionCaveat').textContent='Evidence / policy boundary: '+m.caveat;
+ $('excCount').textContent=`0${phase+1} / 04`;$('excPrev').disabled=phase===0;$('excNext').textContent=phase===3?'Restart ↺':'Next phase →';renderOutcome();}
+function renderOutcome(){const m=exceptionModels[exceptionKind],r=$('resolution').value;$('outcomeOutput').textContent=phase===3?m.resolution[r]:'Decision not yet verified. Complete the earlier phases; only the final readiness check can support a conditional release or escalation.';}
+$('exceptionKind').addEventListener('change',e=>{exceptionKind=e.target.value;phase=0;$('resolution').value='pending';renderException()});$('resolution').addEventListener('change',renderOutcome);
+$('excPrev').addEventListener('click',()=>{if(phase>0){phase--;renderException()}});$('excNext').addEventListener('click',()=>{phase=(phase+1)%4;renderException()});
+$('fullscreen').addEventListener('click',async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await $('shell').requestFullscreen()}catch(e){}});
+document.addEventListener('keydown',e=>{if(e.target.closest('button,select,input,textarea'))return;if(e.key==='ArrowRight'&&activeView==='proposed'){$('next').click()}if(e.key==='ArrowLeft'&&activeView==='proposed'){$('prev').click()}});
+document.documentElement.classList.add('js-ready');renderProposed();renderException();showView('current');
+</script></body></html>
