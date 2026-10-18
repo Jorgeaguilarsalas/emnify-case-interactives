@@ -29,8 +29,10 @@ button,a{font:inherit}button{cursor:pointer}a{color:var(--teal-deep)}button:focu
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 .back-source{font-size:11px;font-weight:750;white-space:nowrap;text-decoration:none;color:#23634e}.back-source:hover{text-decoration:underline}.bottom{flex-wrap:wrap}
 </style>
+<style>.skip-link{position:fixed;top:-90px;left:12px;z-index:9999;padding:10px 14px;border:2px solid #12765e;border-radius:6px;background:#fff;color:#17323a}.skip-link:focus{top:12px}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}</style>
 </head>
 <body>
+<a class="skip-link" href="#mainContent" onclick="document.getElementById('mainContent')?.focus()">Skip to main content</a>
 <div class="shell">
 <header class="mast">
   <div class="identity"><div class="logo" aria-hidden="true">C</div><div><strong>CONNECTED DELIVERY</strong><small>Process intelligence / P5</small></div></div>
@@ -44,7 +46,7 @@ button,a{font:inherit}button{cursor:pointer}a{color:var(--teal-deep)}button:focu
  <button class="menu-trigger" id="openMenu" type="button" aria-label="Open process menu" aria-expanded="false" aria-controls="processDrawer"><span class="burger" aria-hidden="true"><i></i><i></i><i></i></span><span>Processes</span><span class="current-id" id="activeId">PR13</span></button>
  <span class="toolbar-note">G1 · Nine analytical contracts · G2 not verified</span>
 </div>
-<main id="mainContent" class="panel" aria-live="polite"></main>
+<main id="mainContent" tabindex="-1" class="panel" aria-live="polite"></main>
 <p class="legal">Independent case-study material. These analytical models are not verified Emnify operating procedures. No private research documents are published here.</p>
 </div>
 <div class="overlay" id="menuOverlay" hidden></div>
