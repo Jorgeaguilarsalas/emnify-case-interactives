@@ -27,6 +27,7 @@ button,a{font:inherit}button{cursor:pointer}a{color:var(--teal-deep)}button:focu
 @media(max-width:610px){.shell{padding:15px 14px 35px}.mast{padding-bottom:23px}.head-actions{gap:12px}.head-actions a{font-size:10px}.head-actions a:first-child{display:none}.hero{display:block}.hero-stat{display:inline-block;margin-top:13px}.hero h1{font-size:32px}.toolbar-note{font-size:10px}.panel-head{padding:23px;display:block}.status{display:inline-block;margin-top:15px}.body{padding:22px 17px}.cards{grid-template-columns:1fr}.discover{grid-column:auto}.card{padding:18px}.flow{grid-template-columns:1fr;gap:4px}.node{min-height:69px;padding:11px 14px}.node[aria-pressed="true"]{padding:10px 13px}.arrow{font-size:18px;line-height:1.1}.arrow small{display:inline;margin-left:7px;font-size:9px}.step-note{display:block}.step-note b{display:block;margin-bottom:3px}.bottom{padding:15px 17px}.toolbar{align-items:center}}
 @media print{.head-actions,.menu-trigger,.overlay,.drawer,.bottom{display:none!important}.shell{max-width:none}.panel{border:0;box-shadow:none}body{background:#fff}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+.back-source{font-size:11px;font-weight:750;white-space:nowrap;text-decoration:none;color:#23634e}.back-source:hover{text-decoration:underline}.bottom{flex-wrap:wrap}
 </style>
 </head>
 <body>
@@ -95,7 +96,7 @@ function render(){const p=byId[selected];if(!p){renderNav();document.getElementB
  +'<section class="card missing"><div class="card-top"><h3>What’s missing</h3><span class="signal">U · Unknown</span></div>'+bullets(p.missing)+'</section>'
  +'<section class="card discover"><div class="card-top"><h3>Questions to validate</h3><span class="signal">Discovery</span></div>'+bullets(p.questions)+'</section>'
  +'</div>'+evidence(p)+'</div>'
- +'<footer class="bottom"><button type="button" id="prev" '+(idx===0?'disabled':'')+' aria-label="Previous process">← Previous</button><span>'+String(idx+1)+' of 9 pilots</span><button type="button" id="next" '+(idx===8?'disabled':'')+' aria-label="Next process">Next →</button></footer>';
+ +'<footer class="bottom"><button type="button" id="prev" '+(idx===0?'disabled':'')+' aria-label="Previous process">← Previous</button><span>'+String(idx+1)+' of 9 pilots</span><a class="back-source" href="../connected-delivery/#l=2&p='+encodeURIComponent(p.id)+'">↖ Back to '+esc(p.id)+'</a><button type="button" id="next" '+(idx===8?'disabled':'')+' aria-label="Next process">Next →</button></footer>';
 main.querySelector("#prev").addEventListener("click",()=>{if(idx>0)location.hash=processes[idx-1].id;});
 main.querySelector("#next").addEventListener("click",()=>{if(idx<8)location.hash=processes[idx+1].id;});
 if(p.ready){for(const b of main.querySelectorAll("[data-step]")){b.addEventListener("click",()=>{for(const x of main.querySelectorAll("[data-step]"))x.setAttribute("aria-pressed",String(x===b));const v=focusNotes[b.dataset.step];main.querySelector("#stepTitle").textContent=v[0];main.querySelector("#stepText").textContent=v[1];});}}
