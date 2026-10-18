@@ -1,0 +1,30 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const main=fs.readFileSync('connected-delivery/index.html','utf8');
+const p5=fs.readFileSync('p5/index.html','utf8');
+function script(page){const m=page.match(/<script[^>]*>([\s\S]*?)<\/script>/i);assert(m,'inline script missing');new vm.Script(m[1]);return m[1];}
+script(main);script(p5);
+const m=main.match(/const DATA=({[\s\S]*?});\n/);assert(m,'DATA registry missing');
+const d=JSON.parse(m[1]),r=d.registry;
+const unique=xs=>new Set(xs).size===xs.length;
+assert.equal(r.processes.length,36);assert.equal(r.tasks.length,108);assert.equal(r.actors.length,22);
+assert.equal(r.teams.length,17);assert.equal(r.capabilities.length,16);assert.equal(r.handoffs.length,17);
+assert.equal(r.links.length,477);
+const ids=r.processes.map(x=>x.id);assert(unique(ids));assert(ids.every(x=>/^(PR(?:0[1-9]|1[0-9]|2[0-9])|PX0[1-7])$/.test(x)));
+assert(unique(r.tasks.map(x=>x.id)));
+const pilot=['PR06','PR07','PR08','PR09','PR10','PR12','PR13','PR14','PR20'];
+assert(pilot.every(x=>p5.includes('id:"'+x+'"')));
+assert(pilot.every(x=>ids.includes(x)));
+assert.equal(r.links.filter(x=>x.process==='PR02'&&x.dim==='actors').length,4);
+assert.deepEqual(r.processes.find(x=>x.id==='PR27').stages,['J7','J3','J4','J5']);
+assert.equal(d.p6_s4_overlay.analytical_stage_transitions.length,1);
+assert.equal(d.p6_s4_overlay.route_candidates.length,0);
+assert.equal(d.p6_s4_overlay.contract_status.level,'G1');
+assert.equal(d.p6_s4_overlay.pr20_task_provenance.canonical_source_code,'O');
+assert.equal(d.p6_s4_overlay.pr20_task_provenance.ui_specific_task_code,'H');
+assert(d.sources.s4.includes('1B1SXNqF-6bcvjPZzZzR2FTYv9puRRDvgpweMN5TakUI'));
+assert(d.sources.case.includes('1E7EjMj6rBRlHmCOclgyD0s3-6gSg6ATO'));
+for(const html of [main,p5]){assert(html.includes('class="skip-link"'));assert(html.includes('id="mainContent"'));assert(html.includes('prefers-reduced-motion'));}
+assert(main.includes('../p5/#${encodeURIComponent(pid)}'));
+assert(p5.includes('../connected-delivery/#l=2&p='));
+assert(p5.includes('Contract not yet available'));
+console.log('P6/P7 source regression PASS: 36 processes, 108 tasks, 9 contracts, script syntax, source links, navigation templates.');
