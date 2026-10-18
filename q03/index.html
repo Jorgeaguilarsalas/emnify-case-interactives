@@ -1,229 +1,174 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Emnify Q03 — Three-View Pipeline Simulator · v4.4 Review</title>
-<meta name="description" content="Evidence-bounded Task 2 Question 2 three-view process walkthrough; source scenario, proposed process, and conditional exception decisions.">
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Independent case-study model: case-described frictions, a conditional proposed workflow and illustrative exception decisions.">
+<title>Q03 | Contract to delivery · Minimal process explorer v5</title>
 <style>
-:root{--ink:#172a31;--sub:#52646a;--quiet:#73828a;--teal:#086d66;--tint:#eaf5f2;--line:#dbe3e2;--paper:#fff;--wash:#f6f8f7;--amber:#925b18;--amber-wash:#fff7e9}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:#e8eeed;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;-webkit-font-smoothing:antialiased}button{font:inherit;cursor:pointer}button:focus-visible{outline:3px solid #16a494;outline-offset:2px}
-button, [role="button"]{-webkit-tap-highlight-color:transparent}
-.shell{max-width:1480px;margin:24px auto;background:var(--paper);min-height:calc(100vh - 48px);box-shadow:0 18px 55px #18333312;border:1px solid #e4e9e7;padding:38px 46px 25px;display:flex;flex-direction:column;gap:0}
-.top{display:flex;align-items:flex-start;justify-content:space-between;gap:30px}
-.eyebrow{color:var(--teal);font-size:11px;letter-spacing:.15em;font-weight:800;margin:0 0 12px;text-transform:uppercase}
-h1{font-size:clamp(30px,3vw,43px);font-weight:720;letter-spacing:-.046em;line-height:1.08;margin:0}
-.lead{font-size:15px;line-height:1.45;color:var(--sub);margin:13px 0 0;max-width:760px}
-.top-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
-.segment{display:flex;gap:3px;padding:4px;border:1px solid var(--line);border-radius:9px;background:var(--wash)}
-.segment button{border:0;border-radius:6px;background:transparent;padding:10px 13px;white-space:nowrap;color:var(--sub);font-size:12px;font-weight:700}
-.segment button[aria-pressed=true]{background:white;box-shadow:0 1px 5px #1b393013;color:var(--ink)}
-.iconbtn{width:37px;height:37px;display:grid;place-items:center;border:1px solid var(--line);border-radius:8px;background:white;color:var(--sub)}
-.legend{display:flex;align-items:center;justify-content:space-between;gap:15px;margin:29px 0 12px}.section-label{font-size:11px;letter-spacing:.09em;font-weight:780;color:#526469;text-transform:uppercase}.legend-note{font-size:12px;color:var(--quiet)}
-.stages{display:grid;grid-template-columns:3fr 1fr 2fr;gap:12px;margin:0 0 8px}.stages span{font-size:10px;font-weight:750;letter-spacing:.1em;text-transform:uppercase;color:#758786;padding-left:2px}
-.flow{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
-.step{border:1px solid var(--line);border-radius:9px;padding:14px 14px 13px;background:white;min-height:128px;text-align:left;display:flex;flex-direction:column;gap:11px;position:relative;transition:border-color .13s,background .13s}
-.step:not(:last-child):after{content:"›";position:absolute;z-index:3;left:calc(100% + 4px);top:45%;font-weight:800;color:#a8b7b3;font-size:20px}
-.step:hover{border-color:#8cbeb4}.step[aria-current=step]{background:var(--tint);border:1.5px solid var(--teal);padding:13.5px 13.5px 12.5px}
-.step-idx{font-size:10px;font-weight:850;letter-spacing:.1em;color:#667a7a}.step-name{font-size:16px;font-weight:730;letter-spacing:-.025em;line-height:1.23;min-height:38px}.step-owner{font-size:12px;color:var(--sub);line-height:1.3;margin-top:auto}.step-condition{font-size:10px;color:#8b6b41;font-weight:750}
-.lesson{display:flex;align-items:center;justify-content:space-between;gap:15px;margin:17px 0 12px;padding:10px 13px;border:1px solid #e0e7e5;background:#fbfcfb;border-radius:8px}
-.lesson p{margin:0;font-size:12px;color:var(--sub);line-height:1.4}.lesson strong{color:var(--ink)}.lesson .guide{white-space:nowrap;color:#62736f;font-weight:700;font-size:11px}
-.focus{display:grid;grid-template-columns:minmax(0,1.04fr) minmax(0,1fr);border:1px solid var(--line);border-radius:12px;min-height:247px;overflow:hidden;background:#fff}
-.narrative{padding:22px 25px 21px;background:var(--wash);border-right:1px solid var(--line)}
-.focus-eyebrow{display:flex;justify-content:space-between;align-items:center;gap:12px;color:var(--teal);font-size:10px;font-weight:850;letter-spacing:.085em;text-transform:uppercase}
-.narrative h2{font-size:27px;letter-spacing:-.038em;font-weight:730;margin:9px 0 9px;line-height:1.15}
-.explain{font-size:14px;color:#344a4e;line-height:1.52;margin:0 0 14px;max-width:660px}
-.branch-label{color:#617372;font-weight:750;font-size:10px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px}
-.branch{display:flex;gap:15px;align-items:stretch}.branch>div{flex:1;padding:11px 13px;border-radius:7px;background:#fff;border:1px solid var(--line)}.branch b{display:block;font-size:11px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px;color:#1a756d}.branch span{font-size:12px;line-height:1.4;color:#455b60}
-.narrative[data-exception=true]{background:var(--amber-wash)}.narrative[data-exception=true] .focus-eyebrow{color:var(--amber)}.narrative[data-exception=true] .branch b{color:var(--amber)}
-.criteria{padding:21px 23px 16px;min-height:247px;display:flex;flex-direction:column;overflow:hidden}
-.criteria-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.criteria-head strong{font-size:15px;font-weight:730}.detail-toggle{font-size:12px;font-weight:750;color:var(--teal);background:transparent;border:0;padding:5px 0}
-.criteria-items{overflow:auto;margin:13px -3px 0;padding-right:7px;max-height:188px;scrollbar-color:#cad9d5 transparent;scrollbar-width:thin}
-.criterion{display:grid;grid-template-columns:127px 1fr;gap:12px;padding:7px 0;border-bottom:1px solid #edf0ef}.criterion:last-child{border-bottom:0}.criterion dt{font-size:11px;font-weight:750;color:#637578}.criterion dd{font-size:12.7px;line-height:1.43;margin:0;color:#2b4148}
-.criteria:has(.detail-toggle[aria-expanded=true]) .criteria-items{max-height:none;overflow:visible}
-.criteria-note{font-size:10.5px;color:#6f7e7d;line-height:1.4;margin:auto 0 0;padding-top:9px}
-.checks{display:flex;align-items:center;justify-content:space-between;gap:17px;margin:19px 0 0;border-top:1px solid var(--line);padding-top:15px}.check{display:flex;align-items:flex-start;gap:11px;flex:1}.check-num{border:1px solid var(--line);border-radius:50%;min-width:24px;height:24px;display:grid;place-items:center;font-size:11px;color:#637774;font-weight:700}.check b{display:block;font-size:12px;margin-bottom:3px}.check small{font-size:11px;color:#778782;line-height:1.3;display:block}
-.footer{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-top:20px;margin-top:auto}.footer p{color:var(--quiet);font-size:10.5px;max-width:720px;line-height:1.5;margin:0}.nav{display:flex;align-items:center;gap:9px}.count{font-size:12px;color:var(--sub);font-variant-numeric:tabular-nums;margin-right:5px;white-space:nowrap}.nav button{font-size:12px;font-weight:700;line-height:1.15;background:white;border:1px solid var(--line);color:#29484a;padding:9px 13px;border-radius:7px}.nav button.primary{background:var(--teal);border-color:var(--teal);color:white}.nav button:disabled{opacity:.37;cursor:not-allowed}
-.shell:fullscreen{max-width:none;margin:0;min-height:100vh;padding:2.6vw 3.5vw 2vw;box-shadow:none}
-@media(max-width:1150px){.shell{margin:0;min-height:100vh;padding:28px 30px}.flow{gap:7px}.step{padding:12px 10px}.step-name{font-size:14px}.step-owner{font-size:11px}.narrative h2{font-size:23px}.focus{min-height:270px}}
-@media(max-width:840px){.shell{padding:22px 18px;gap:0}.top{flex-direction:column;gap:17px}.top-actions{justify-content:flex-start}.legend{margin:21px 0 11px}.flow{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.stages{display:none}.step{min-height:100px}.step:not(:last-child):after{display:none}.step-name{min-height:0}.lesson{align-items:flex-start}.lesson .guide{display:none}.focus{grid-template-columns:1fr}.narrative{border-right:0;border-bottom:1px solid var(--line);padding:19px 16px}.criteria{min-height:0;padding:17px 16px}.criteria-items{max-height:none}.checks{align-items:flex-start}.footer{flex-direction:column;align-items:flex-start}.nav{align-self:flex-end}}
-@media(max-width:510px){h1{font-size:31px}.lead{font-size:13px}.segment button{font-size:11px;padding:8px}.step{min-height:104px}.step-idx{font-size:9px}.step-name{font-size:12px}.step-owner{font-size:10px}.flow{gap:6px}.branch{flex-direction:column;gap:7px}.checks{flex-direction:column;gap:12px}.criterion{grid-template-columns:98px 1fr}.criterion dd{font-size:12px}.footer p{max-width:300px}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
-
-/* v4: logic-first extension. Visual system deliberately largely retained for later design review. */
-.shell{max-width:1510px;min-height:calc(100vh - 48px)}
-.top-actions .segment{flex-wrap:wrap}.segment button[aria-selected=true]{background:#fff;box-shadow:0 1px 5px #1b393013;color:var(--ink)}
-.view{margin-top:19px}.view[hidden]{display:none!important}
-.view-header{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:16px}
-.view-header h2{font-size:22px;margin:0 0 4px;letter-spacing:-.027em}
-.view-header p{font-size:12.5px;max-width:820px;color:var(--sub);margin:0;line-height:1.55}
-.fact-tag{display:inline-block;border:1px solid var(--line);background:#f4f8f7;border-radius:5px;font-size:10px;font-weight:850;letter-spacing:.06em;color:var(--teal);padding:6px 8px;white-space:nowrap}
-.case-lanes{display:grid;grid-template-columns:1fr 1fr;gap:15px}
-.lane{border:1px solid var(--line);border-radius:11px;padding:18px;background:#fff}
-.lane h3{font-size:16px;letter-spacing:-.02em;margin:0 0 12px}
-.case-sequence{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-bottom:13px}
-.case-pill{border-radius:6px;background:var(--wash);border:1px solid var(--line);padding:9px 10px;font-size:11px;font-weight:650;line-height:1.4}
-.case-arrow{color:#80928e;font-weight:750}.case-text{font-size:12px;line-height:1.5;color:#42575b;margin:0}
-.signal{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;margin-top:13px}
-.signal article{padding:13px 14px;border:1px solid #e9ddd1;background:#fffaf2;border-radius:9px}
-.signal strong{display:block;color:#835317;font-size:12px;margin-bottom:6px}.signal span{font-size:11.5px;line-height:1.45;display:block;color:#5f6258}
-.unknowns{margin-top:13px;border:1px solid var(--line);border-radius:9px;padding:13px 15px;background:#fafcfb;color:#52686a;font-size:12px;line-height:1.5}
-.unknowns b{color:var(--ink)}
-.flow-title{margin:20px 0 8px}.flow-title .section-label{font-size:11px}
-.action-row{display:flex;justify-content:space-between;align-items:center;gap:13px;margin:10px 0 0}
-.action-row .muted{font-size:11px;color:var(--quiet)}
-.trace{display:flex;gap:8px;align-items:center;color:var(--sub);font-size:12px;font-weight:750}
-.small-button{border:1px solid var(--line);background:#fff;color:var(--teal);font-size:12px;padding:8px 10px;border-radius:7px;font-weight:750}
-.exception-tools{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:14px 0}
-.exception-tools label{font-size:12px;font-weight:750;color:var(--sub)}
-.exception-tools select{border:1px solid #cbd8d5;background:#fff;border-radius:7px;padding:10px 12px;min-width:260px;max-width:100%;font-size:13px;color:var(--ink)}
-.method-flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-bottom:13px}
-.method-step{border:1px solid var(--line);background:white;border-radius:9px;text-align:left;padding:11px 12px;min-height:66px}
-.method-step[aria-current=step]{border-color:var(--teal);background:var(--tint)}
-.method-step .phase-num{font-size:10px;color:var(--teal);font-weight:800;display:block;margin-bottom:5px}
-.method-step .phase-name{font-size:12px;font-weight:740;line-height:1.3;display:block}
-.exception-focus{display:grid;grid-template-columns:1.15fr .85fr;gap:0;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:white}
-.exception-focus .left{background:var(--wash);padding:21px 23px}
-.exception-focus .right{padding:20px 22px;border-left:1px solid var(--line)}
-.exception-focus h3{font-size:22px;margin:6px 0 10px;letter-spacing:-.028em}
-.exception-focus p{font-size:13px;line-height:1.55;color:#3c5357;margin:0 0 12px}
-.line-label{display:block;color:#69817e;font-size:10px;font-weight:820;letter-spacing:.08em;margin-bottom:7px;text-transform:uppercase}
-.owner-note{font-size:12px;color:var(--sub);padding:10px 11px;background:white;border:1px solid var(--line);border-radius:7px;margin-top:10px}
-.next-split{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}
-.next-split>div{background:#fff;border:1px solid var(--line);padding:11px 12px;border-radius:7px}
-.next-split b{display:block;font-size:10.5px;letter-spacing:.06em;color:var(--teal);margin-bottom:6px}
-.next-split p{font-size:11.5px;margin:0}
-.outcome-row{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
-.outcome-row select{background:#fff;border:1px solid #cedbd6;color:var(--ink);border-radius:7px;padding:9px 11px;width:100%;margin-bottom:9px}
-.outcome-output{border:1px solid #d8e5de;background:#f7faf8;color:#355451;border-radius:7px;padding:11px;font-size:12px;line-height:1.5;min-height:64px}
-.proposed-focus{margin-top:12px}
-.info-foot{font-size:11px;line-height:1.5;color:var(--quiet);border-top:1px solid var(--line);margin-top:16px;padding-top:14px}
-.nav{flex-wrap:wrap}.control-panel{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:13px}
-button[aria-selected=true],button[aria-current=step]{cursor:pointer}
-@media(max-width:1050px){.case-lanes,.exception-focus{grid-template-columns:1fr}.exception-focus .right{border-left:0;border-top:1px solid var(--line)}.signal{grid-template-columns:1fr 1fr 1fr}.top{flex-direction:column}.method-flow{grid-template-columns:repeat(4,minmax(0,1fr))}}
-@media(max-width:670px){.top-actions{justify-content:flex-start}.segment{width:100%}.segment button{flex:1;white-space:normal}.case-lanes,.signal,.next-split{grid-template-columns:1fr}.method-flow{grid-template-columns:repeat(2,minmax(0,1fr))}.shell{padding:18px 14px}.exception-focus .left,.exception-focus .right{padding:17px 15px}.view-header{flex-direction:column}.case-sequence{gap:5px}.case-pill{padding:7px}.flow{grid-template-columns:repeat(2,minmax(0,1fr))}.footer{margin-top:20px}}
-
-/* v4.2 — Requested editorial removals: lean header and compact case evidence label. */
-.top .eyebrow{margin-bottom:0}
-.view-header-compact{justify-content:flex-end;margin-bottom:10px}
-.view-selector{margin-top:16px}
-/* v4.1 — Discoverable three-view navigator. This is an information-architecture fix, not a visual rebrand. */
-.top{align-items:center}.top-actions{align-self:flex-start;padding-top:3px}
-.view-selector{margin-top:27px;padding-top:18px;border-top:1px solid var(--line)}
-.view-selector-heading{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:13px}
-.view-selector-eyebrow{font-size:11px;font-weight:830;letter-spacing:.105em;color:var(--teal);margin:0 0 5px}
-.view-selector-hint{font-size:12px;line-height:1.4;color:var(--sub);margin:0}
-.show-all-btn{background:#fff;border:1px solid #b4c9c4;border-radius:7px;padding:9px 13px;color:#225c56;font-size:12px;font-weight:770;white-space:nowrap}
-.show-all-btn:hover,.show-all-btn[aria-pressed=true]{background:var(--tint);border-color:var(--teal)}
-.view-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.view-tab{min-width:0;min-height:112px;position:relative;display:flex;flex-direction:column;gap:7px;text-align:left;border:1px solid #cbd8d5;border-radius:9px;padding:15px 17px 14px;background:#fff;color:var(--ink);transition:background .15s,border-color .15s,box-shadow .15s}
-.view-tab:hover{border-color:#6bafa3;background:#f7faf9}
-.view-tab.is-active,.view-tab[aria-pressed=true]{border:2px solid var(--teal);padding:14px 16px 13px;background:#eaf6f2;box-shadow:0 4px 16px #086d6611}
-.view-tab-num{font-size:10px;color:#4b7c75;font-weight:850;letter-spacing:.07em}
-.view-tab strong{font-size:18px;font-weight:770;letter-spacing:-.026em;line-height:1.08}
-.view-tab>span:not(.view-tab-num):not(.view-tab-arrow){font-size:12px;color:var(--sub)}
-.view-tab-arrow{position:absolute;right:16px;top:15px;font-size:18px;color:#5c8d82}
-.view-status{font-size:10px;font-weight:800;letter-spacing:.095em;color:var(--teal);margin:15px 0 0;border-bottom:1px solid var(--line);padding-bottom:10px}
-.view{margin-top:19px}
-.js-ready .view[hidden]{display:none!important}
-.js-ready .view:not([hidden])+.view:not([hidden]){border-top:2px solid var(--line);padding-top:24px;margin-top:34px}
-@media(max-width:840px){.view-tab{min-height:98px;padding:12px}.view-tab.is-active,.view-tab[aria-pressed=true]{padding:11px}.view-tab strong{font-size:15px}.view-tab>span:not(.view-tab-num):not(.view-tab-arrow){font-size:11px}.view-tab-arrow{display:none}}
-@media(max-width:600px){.view-nav{grid-template-columns:1fr;gap:7px}.view-tab{min-height:0;gap:3px;padding:10px 13px}.view-tab.is-active,.view-tab[aria-pressed=true]{padding:9px 12px}.view-tab strong{font-size:16px}.view-selector-heading{align-items:flex-start;flex-direction:column}.show-all-btn{align-self:flex-start}.top-actions{position:absolute;right:14px;top:16px}.top{padding-right:45px}.view-selector{margin-top:23px}}
-@media print{body{background:#fff}.shell{box-shadow:none;border:0;margin:0}.view-selector{display:none!important}.view{display:block!important;page-break-inside:avoid;border-top:1px solid #ccc;padding-top:15px!important}.footer{page-break-inside:avoid}}
-
-/* v4.4 — Presenter-friendly four cues; detailed reasoning is kept in the source register, not displayed. */
-.validation{margin-top:17px;border-top:1px solid var(--line);padding-top:15px}
-.validation h3{font-size:14px;margin:0 0 11px;font-weight:760;letter-spacing:-.012em}
-.validation-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
-.validation-card{min-width:0;background:#fafbfa;border:1px solid var(--line);border-radius:8px;padding:12px 13px;display:flex;flex-direction:column;gap:7px}
-.validation-index{font-size:10px;font-weight:780;letter-spacing:.055em;color:var(--teal)}
-.validation-card strong{font-size:13px;font-weight:690;line-height:1.3;letter-spacing:-.01em}
-@media(max-width:980px){.validation-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:530px){.validation-grid{grid-template-columns:1fr 1fr;gap:7px}.validation-card{padding:10px}.validation-card strong{font-size:12px}}
-</style></head><body>
+:root{--ink:#1b3034;--sub:#586e70;--quiet:#728387;--line:#dce5e3;--bg:#edf1ef;--paper:#fff;--wash:#f7f9f8;--green:#08785f;--green-wash:#eaf6f0;--green-line:#a8d4c2;--red:#ad4945;--red-wash:#fff3f1;--red-line:#e7bdb7;--amber:#9a6b25;--amber-wash:#fff8ea}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);background:var(--bg);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+button,select{font:inherit}
+button{cursor:pointer}
+button:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #17a58c;outline-offset:2px}
+.shell{max-width:1480px;margin:20px auto;padding:28px 36px 30px;min-height:calc(100vh - 40px);background:var(--paper);border:1px solid #e0e8e4;border-radius:14px;box-shadow:0 10px 36px #233f3310}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:21px}
+.eyebrow{margin:0;font-size:11px;color:#437c6c;font-weight:820;letter-spacing:.105em;text-transform:uppercase}
+.topright{display:flex;gap:10px;align-items:center;font-size:11px;color:var(--quiet)}
+.fullscreen{width:34px;height:34px;border:1px solid var(--line);background:white;color:var(--sub);border-radius:7px;font-size:19px;line-height:1}
+.tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line);border-radius:11px;overflow:hidden;background:#fbfcfb}
+.tab{display:flex;align-items:center;gap:12px;padding:15px 18px;min-width:0;text-align:left;background:transparent;border:0;border-right:1px solid var(--line);color:#647578;min-height:68px}
+.tab:last-child{border-right:0}.tab:hover{background:#f2f7f5}.tab[aria-selected="true"]{background:var(--green-wash);color:var(--ink);box-shadow:inset 0 -3px 0 var(--green)}
+.tab[data-view="current"][aria-selected="true"]{background:var(--red-wash);box-shadow:inset 0 -3px 0 var(--red)}
+.tab[data-view="exceptions"][aria-selected="true"]{background:var(--amber-wash);box-shadow:inset 0 -3px 0 var(--amber)}
+.tab-num{color:#80918f;font-size:11px;font-weight:850}.tab strong{display:block;font-size:16px;font-weight:740;letter-spacing:-.02em;line-height:1.15}.tab small{display:block;font-size:11px;font-weight:450;color:var(--sub);margin-top:5px}
+.view{margin-top:27px}.view[hidden]{display:none!important}
+.viewhead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+h1,h2,h3,h4,p{margin-top:0}.viewhead h1{font-size:26px;line-height:1.13;letter-spacing:-.04em;font-weight:750;margin:0}
+.scope{font-size:10px;letter-spacing:.05em;font-weight:760;color:var(--sub);background:var(--wash);border:1px solid var(--line);padding:6px 9px;border-radius:5px;white-space:nowrap}
+.case-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.lane{border:1px solid var(--line);border-radius:11px;padding:18px;background:#fff;min-width:0}
+.lane h2{font-size:16px;letter-spacing:-.02em;font-weight:730;margin:0 0 13px}
+.lane-flow{display:flex;align-items:stretch;gap:5px}
+.lane-node{flex:1;min-width:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:13px 8px;background:var(--wash);border:1px solid #e5ebea;border-radius:7px;font-weight:690;font-size:12px;line-height:1.27}
+.lane-arrow{flex:0 0 auto;align-self:center;font-size:18px;font-weight:600;color:#a0b1ac}
+.lane-caption{color:var(--sub);font-size:11.5px;line-height:1.45;margin:13px 0 0}
+.lane-alert{border:1px solid var(--red-line);background:var(--red-wash);color:#913d38;padding:9px 10px;border-radius:7px;margin-top:11px;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700}
+.lane-alert svg{width:17px;height:17px;flex-shrink:0}
+.friction{display:flex;align-items:center;gap:11px;margin-top:14px;padding:12px 15px;border:1px solid #e8d4d1;border-radius:9px;background:#fffaf9;flex-wrap:wrap}
+.friction-title{color:#8a4c47;letter-spacing:.06em;font-size:10px;font-weight:810;white-space:nowrap;margin-right:5px}
+.friction-chip{display:inline-flex;align-items:center;gap:5px;padding:7px 10px;background:#fff;border:1px solid var(--red-line);border-radius:6px;color:#a2453d;font-size:11px;font-weight:720}
+.friction small{font-size:10px;color:var(--quiet);margin-left:auto}
+.disclosure{margin-top:14px;border:1px solid #e4eae8;border-radius:8px;background:#fff}
+.disclosure>summary{padding:10px 13px;font-size:11.5px;color:#3b6860;font-weight:730;cursor:pointer;list-style-position:inside}
+.disclosure[open]>summary{border-bottom:1px solid var(--line)}
+.four-cues{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:12px}
+.cue{padding:9px;border:1px solid var(--line);border-radius:7px;background:var(--wash)}
+.cue strong{display:block;font-size:10px;color:var(--green);letter-spacing:.035em;margin-bottom:5px}.cue span{font-size:11px;line-height:1.3;font-weight:620}
+.stage-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:9px;margin:3px 0 9px}
+.stage{font-size:10px;font-weight:800;letter-spacing:.055em;text-transform:uppercase;color:#617673;padding-left:4px}
+.stage:nth-child(1){grid-column:span 3}.stage:nth-child(2){grid-column:span 1;text-align:center;padding-left:0}.stage:nth-child(3){grid-column:span 2;padding-left:6px}
+.stepgrid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:9px}
+.step{min-width:0;min-height:106px;position:relative;padding:12px 12px 10px;display:flex;flex-direction:column;gap:6px;background:white;border:1px solid var(--line);border-radius:9px;text-align:left;color:var(--ink);transition:.15s}
+.step:not(:last-child):after{content:'›';position:absolute;left:calc(100% + 2px);top:42%;color:#9cafaa;font-size:17px;font-weight:800;z-index:2}
+.step:hover{border-color:#7fae9f}
+.step[aria-current="step"]{outline:2px solid var(--green);outline-offset:-1px;background:#f2faf5;border-color:var(--green)}
+.step-mobile-stage{display:none}.step-key{font-size:10px;color:#6e8880;letter-spacing:.045em;font-weight:810}
+.step-title{font-size:14px;font-weight:770;letter-spacing:-.024em;line-height:1.2;min-height:35px}
+.step-owner{font-size:11px;color:var(--sub);margin-top:auto;line-height:1.25}
+.step-improve{border-color:var(--green-line);background:#f4fbf6}
+.step-badge{font-size:9px;font-weight:820;color:var(--green);letter-spacing:.04em;line-height:1.2}
+.route-note{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin:13px 0 15px}
+.route-note span{font-size:11px;color:var(--sub)}
+.route-note strong{font-size:11px;color:var(--green);font-weight:760;background:var(--green-wash);padding:6px 9px;border-radius:5px}
+.focus{border:1px solid var(--line);border-radius:10px;display:grid;grid-template-columns:1.1fr 1fr;overflow:hidden;min-height:206px}
+.focus-main{background:var(--wash);padding:19px 21px}
+.focus-eyebrow{font-size:10px;font-weight:790;color:var(--green);letter-spacing:.075em}
+.focus-main h2{font-size:23px;letter-spacing:-.038em;line-height:1.15;margin:8px 0 8px}
+.focus-main p{color:#3b5554;font-size:13px;line-height:1.48;margin:0 0 13px;max-width:580px}
+.compact-outcomes{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.compact-outcomes div{background:white;border:1px solid var(--line);border-radius:7px;padding:9px 11px}
+.compact-outcomes b{font-size:10px;display:block;color:var(--green);letter-spacing:.04em;text-transform:uppercase;margin-bottom:4px}
+.compact-outcomes span{font-size:11.5px;color:var(--sub);line-height:1.3;display:block}
+.criteria{padding:18px 21px}
+.criteria h3{font-size:14px;font-weight:750;margin:1px 0 10px}
+.criteria-dl{margin:0}.criteria-dl>div{display:grid;grid-template-columns:96px 1fr;gap:10px;padding:7px 0;border-bottom:1px solid #ebefed}.criteria-dl dt{font-size:10.5px;font-weight:730;color:#65817a}.criteria-dl dd{margin:0;font-size:11.8px;color:#344e50;line-height:1.38}
+.criteria-dl>div:last-child{border-bottom:0}
+.criteria-full{margin-top:9px;font-size:11px}
+.criteria-full summary{color:#287463;font-weight:730;cursor:pointer}
+.criteria-footnote{font-size:10px;line-height:1.4;color:var(--quiet);margin:9px 0 0}
+.after-route{display:flex;gap:12px;align-items:center;justify-content:space-between;margin:13px 0 0;padding:11px 14px;border:1px dashed #ccd9d5;border-radius:8px;color:#657b78;background:#fafcfb}
+.after-route b{font-size:10px;letter-spacing:.04em;white-space:nowrap}.after-route span{font-size:11px}
+.selector-head{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}
+.selector-head label{font-size:11px;font-weight:750;color:var(--sub)}
+.selector-head select{font-size:12px;max-width:100%;min-width:270px;border:1px solid var(--line);border-radius:7px;padding:10px 11px;color:var(--ink);background:white}
+.phasebar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:15px 0}
+.phasebtn{font-size:12px;font-weight:730;text-align:left;padding:12px 11px;border:1px solid var(--line);border-radius:8px;background:white;color:var(--sub)}
+.phasebtn .num{font-size:10px;margin-right:8px;color:#a08754}
+.phasebtn[aria-current="step"]{border-color:var(--amber);background:var(--amber-wash);color:#533e18}
+.exc-panel{display:grid;grid-template-columns:1fr .92fr;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.exc-left{padding:20px 22px;background:var(--wash)}
+.exc-right{padding:20px 22px;border-left:1px solid var(--line)}
+.exc-index{font-size:10px;color:var(--amber);font-weight:800;letter-spacing:.07em}
+.exc-left h2{font-size:23px;letter-spacing:-.035em;margin:7px 0 10px}
+.exc-summary{font-size:12.5px;color:#47605e;line-height:1.4;margin:0 0 13px}
+.authority-row{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-bottom:13px}.authority-row span{font-size:10px;color:var(--sub)}.authority-row strong{font-size:11px;color:var(--ink);background:white;border:1px solid var(--line);padding:6px 8px;border-radius:5px}
+.work-split{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.work-split article{border-radius:8px;padding:13px 12px;min-height:91px}.work-split h3{font-size:10px;font-weight:790;letter-spacing:.065em;margin:0 0 7px}.work-split p{font-size:13px;line-height:1.35;font-weight:660;margin:0}
+.work-split .go{border:1px solid var(--green-line);background:var(--green-wash)}.work-split .go h3{color:var(--green)}
+.work-split .wait{border:1px solid var(--red-line);background:var(--red-wash)}.work-split .wait h3{color:var(--red)}
+.exc-right h3{font-size:14px;margin:0 0 8px}
+.exc-right .res-note{font-size:11px;color:var(--sub);line-height:1.4;margin:0 0 9px}
+.exc-right select{width:100%;border:1px solid var(--line);background:#fff;padding:10px;border-radius:7px;font-size:11.5px;color:var(--ink)}
+.exc-right select:disabled{background:#f4f5f5;color:var(--quiet)}
+.result{margin-top:10px;padding:11px 12px;background:#f5f8f6;border:1px solid var(--line);border-radius:7px;font-size:11.8px;line-height:1.45;color:#415956;min-height:70px}
+.result[data-status="cleared"],.result[data-status="not_required"]{background:var(--green-wash);border-color:var(--green-line)}
+.result[data-status="blocked"]{background:var(--red-wash);border-color:var(--red-line)}
+.phase-nav{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:11px}
+.navbtn{border:1px solid var(--line);background:white;padding:8px 12px;border-radius:6px;font-size:11px;font-weight:720;color:#41655f}
+.navbtn.primary{color:white;background:var(--green);border-color:var(--green)}
+.navbtn:disabled{opacity:.45;cursor:not-allowed}
+.exc-detail{margin-top:13px;border:1px solid var(--line);border-radius:8px;padding:0 12px}.exc-detail summary{padding:11px 0;color:#3b6860;font-size:11px;font-weight:720;cursor:pointer}.exc-detail p{font-size:11px;color:var(--sub);line-height:1.45;margin:0 0 11px}
+.hidden{display:none!important}
+.shell:fullscreen{max-width:none;min-height:100vh;margin:0;border-radius:0;padding:2.7vw 3.5vw}
+@media(max-width:1100px){.shell{margin:0;min-height:100vh;border-radius:0}.stepgrid{gap:6px}.step{padding:9px;min-height:108px}.step-title{font-size:12.5px}.step-owner{font-size:10px}.lane-flow{flex-wrap:wrap}.lane-node{min-width:100px}.lane-arrow{font-size:16px}}
+@media(max-width:780px){.shell{padding:20px 17px}.tab{padding:11px;min-height:61px}.tab strong{font-size:13px}.tab small{font-size:10px}.viewhead h1{font-size:23px}.case-grid,.focus,.exc-panel{grid-template-columns:1fr}.exc-right{border-left:0;border-top:1px solid var(--line)}.stepgrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.stage-grid{display:none}.step:not(:last-child):after{display:none}.step{min-height:90px}.step-title{font-size:14px}.phasebar{gap:6px}.four-cues{grid-template-columns:repeat(2,minmax(0,1fr))}.friction small{margin-left:0}.after-route{flex-wrap:wrap}}
+@media(max-width:520px){.step-mobile-stage{display:inline}.topbar{margin-bottom:14px}.tab{gap:4px;padding:9px 7px;flex-direction:column;align-items:flex-start}.tab strong{font-size:11.5px}.tab small{display:none}.view{margin-top:19px}.viewhead h1{font-size:22px}.scope{font-size:9px}.lane{padding:13px}.lane-flow{flex-wrap:nowrap;gap:3px}.lane-node{min-width:0;padding:10px 5px;font-size:10px}.lane-arrow{font-size:12px}.friction{gap:5px;padding:10px}.friction-chip{font-size:10px}.stepgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.phasebar{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}.phasebtn{padding:8px 5px;font-size:10px}.phasebtn .num{display:block;margin-bottom:3px}.selector-head select{min-width:0;width:100%}.selector-head label{width:100%}.focus-main,.criteria,.exc-left,.exc-right{padding:16px}.compact-outcomes,.work-split{grid-template-columns:1fr 1fr}.work-split article{padding:10px 8px}.work-split p{font-size:11px}.work-split h3{font-size:9px}.after-route{gap:7px}.after-route span{font-size:10px}}
+@media print{body{background:white}.shell{border:0;box-shadow:none;margin:0}.tabs,.fullscreen{display:none}.view{display:block!important;page-break-after:always}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
 <main class="shell" id="shell">
- <header class="top">
-  <div><p class="eyebrow">Q03 · Task 2 / Question 2 · Presenter review v4.4</p></div>
-  <div class="top-actions"><button class="iconbtn" id="fullscreen" type="button" aria-label="Toggle full screen" title="Full screen">⛶</button></div>
- </header>
- <section class="view-selector" aria-labelledby="viewsLabel">
-   <div class="view-selector-heading"><div><p class="view-selector-eyebrow" id="viewsLabel">THREE VIEWS · ONE OPERATIONAL SYSTEM</p><p class="view-selector-hint">Select a perspective to explore it. The three options below are interactive.</p></div>
-   <button type="button" class="show-all-btn" id="showAll" aria-pressed="false" aria-controls="view-current view-proposed view-exceptions">Show all three ↓</button></div>
-   <nav class="view-nav" aria-label="Three analysis views">
-     <button type="button" class="view-tab" id="tab-current" aria-controls="view-current" aria-pressed="true" data-view="current"><span class="view-tab-num">01 / AS-IS</span><strong>Current case</strong><span>What Emnify describes</span><span class="view-tab-arrow" aria-hidden="true">↗</span></button>
-     <button type="button" class="view-tab" id="tab-proposed" aria-controls="view-proposed" aria-pressed="false" data-view="proposed"><span class="view-tab-num">02 / TO-BE</span><strong>Proposed process</strong><span>Six steps and operating criteria</span><span class="view-tab-arrow" aria-hidden="true">↗</span></button>
-     <button type="button" class="view-tab" id="tab-exceptions" aria-controls="view-exceptions" aria-pressed="false" data-view="exceptions"><span class="view-tab-num">03 / DECISIONS</span><strong>Exception handling</strong><span>Four cases and resolution logic</span><span class="view-tab-arrow" aria-hidden="true">↗</span></button>
-   </nav>
-   <p class="view-status" id="viewStatus" aria-live="polite">VIEW 1 OF 3 · Current case</p>
- </section>
- <section class="view" id="view-current" role="region" aria-labelledby="tab-current">
-  <div class="view-header view-header-compact"><span class="fact-tag">CASE-DESCRIBED · NOT VERIFIED SOP</span></div>
-  <div class="case-lanes">
-   <article class="lane"><h3>Commercial agreement → delivery</h3><div class="case-sequence">
-    <span class="case-pill">Sales drafts contract<br><small>Salesforce</small></span><span class="case-arrow">›</span>
-    <span class="case-pill">Pricing approval*<br>Sales Ops review</span><span class="case-arrow">›</span>
-    <span class="case-pill">Signed contract</span><span class="case-arrow">›</span>
-    <span class="case-pill">Service Delivery</span>
-   </div><p class="case-text"><b>Where clarification arises:</b> If the signed terms contain information that is missing or unclear, Service Delivery requests clarification from Sales before proceeding.</p>
-   <p class="case-text" style="margin-top:9px"><b>*Existing boundaries:</b> Pricing is conditional and must authorize eligible below-threshold terms before commitment; Sales Ops already reviews before the contract is sent.</p></article>
-   <article class="lane"><h3>SIM orders → physical shipment</h3><div class="case-sequence">
-    <span class="case-pill">Customer order<br>Portal / other route</span><span class="case-arrow">›</span>
-    <span class="case-pill">Finance processing*<br>some orders</span><span class="case-arrow">›</span>
-    <span class="case-pill">Logistics<br>fulfil & ship</span>
-   </div><p class="case-text"><b>*Conditional:</b> The case states that some orders need manual Finance processing. It does not establish that all alternative channels need Finance or that manual processing is inherently inefficient.</p>
-   <p class="case-text" style="margin-top:9px"><b>Separate outcome:</b> Physical dispatch is not proof of SIM provisioning, working connectivity or customer-verified first value.</p></article>
-  </div>
-  <div class="legend"><span class="section-label">Consequences stated in Task 3</span><span class="legend-note">Observed descriptions · Not quantified</span></div>
-  <div class="signal"><article><strong>Repeated clarifications</strong><span>Service Delivery Managers report significant post-signature clarification and rework.</span></article><article><strong>Onboarding delays</strong><span>Customer onboarding waits while contract questions are resolved.</span></article><article><strong>Cross-team tension</strong><span>SDMs experience frustration; Sales considers bespoke flexibility necessary to win business.</span></article></div>
-   <section class="validation" aria-labelledby="validationTitle">
-    <h3 id="validationTitle">Four questions before redesign</h3>
-    <div class="validation-grid">
-     <div class="validation-card"><span class="validation-index">01 · HANDOVER</span><strong>Where does clarification start?</strong></div>
-     <div class="validation-card"><span class="validation-index">02 · AUTHORITY</span><strong>Who can unblock the next step?</strong></div>
-     <div class="validation-card"><span class="validation-index">03 · SIM ORDERS</span><strong>When does Finance apply?</strong></div>
-     <div class="validation-card"><span class="validation-index">04 · IMPACT</span><strong>Does a change actually reduce rework?</strong></div>
+<header class="topbar"><p class="eyebrow">Q03 · TASK 2 / QUESTION 2</p><div class="topright"><span>PROCESS EXPLORER · v5 REVIEW</span><button class="fullscreen" id="fullscreen" title="Full screen" aria-label="Toggle full screen" type="button">⛶</button></div></header>
+<nav class="tabs" aria-label="Q03 three views">
+<button class="tab" id="tab-current" data-view="current" aria-selected="true" aria-controls="view-current" type="button"><span class="tab-num">01</span><span><strong>Current case</strong><small>Where friction appears</small></span></button>
+<button class="tab" id="tab-proposed" data-view="proposed" aria-selected="false" aria-controls="view-proposed" type="button"><span class="tab-num">02</span><span><strong>Proposed process</strong><small>What would change</small></span></button>
+<button class="tab" id="tab-exceptions" data-view="exceptions" aria-selected="false" aria-controls="view-exceptions" type="button"><span class="tab-num">03</span><span><strong>Exceptions</strong><small>Who decides what</small></span></button>
+</nav>
+<section class="view" id="view-current" role="region" aria-labelledby="tab-current">
+<div class="viewhead"><h1>Current case</h1><span class="scope">CASE-DESCRIBED</span></div>
+<div class="case-grid">
+  <article class="lane">
+    <h2>Contract → Service Delivery</h2>
+    <div class="lane-flow" aria-label="Case-described contracting flow">
+      <div class="lane-node">Sales drafts</div><span class="lane-arrow">›</span><div class="lane-node">Pricing*<br>Sales Ops review</div><span class="lane-arrow">›</span><div class="lane-node">Contract signed</div><span class="lane-arrow">›</span><div class="lane-node">Delivery</div>
     </div>
-  </section>
- </section>
- <section class="view" id="view-proposed" role="region" aria-labelledby="tab-proposed">
-  <div class="view-header"><div><h2>Proposed operating model</h2><p>A selected contracted physical-SIM route. Nodes represent a useful analytical path, not a mandatory company-wide sequence; some controls or activities may overlap.</p></div><span class="fact-tag">PROPOSED · SUBJECT TO VALIDATION</span></div>
-  <div class="stages" aria-hidden="true"><span>J3 · Commercial commitment</span><span>J3 → J4 · Handover</span><span>J4 · Physical SIM fulfillment</span></div>
-  <div class="flow" id="flow" aria-label="Six process steps"></div>
-  <div class="lesson"><p><strong>Control logic:</strong> Sales Ops retains its existing review; Pricing approval is prior and conditional; Finance is involved only where its actual rule applies. An accepted handoff is not automatically a complete implementation.</p><span class="guide">Select any step</span></div>
-  <div class="focus proposed-focus">
-   <section class="narrative" id="narrative"><div class="focus-eyebrow"><span id="focusIndex"></span><span id="caseLabel">PROPOSED PATH</span></div>
-    <h2 id="focusTitle"></h2><p class="explain" id="focusExplain"></p><div class="branch-label">What this stage distinguishes</div>
-    <div class="branch"><div><b id="branchATitle"></b><span id="branchAText"></span></div><div><b id="branchBTitle"></b><span id="branchBText"></span></div></div>
-   </section>
-   <section class="criteria"><div class="criteria-head"><strong>Operating criteria</strong><button type="button" class="detail-toggle" id="toggleDetails" aria-expanded="false">View all criteria ↓</button></div>
-    <dl class="criteria-items" id="criteriaItems"></dl><p class="criteria-note" id="criteriaNote"></p></section>
-  </div>
-  <div class="control-panel"><span class="trace" id="count">01 / 06</span><div class="nav"><button id="prev" type="button">← Previous</button><button class="primary" id="next" type="button">Next →</button></div></div>
-  <div class="checks"><div class="check"><span class="check-num">1</span><div><b>Information complete</b><small>Required inputs exist.</small></div></div><div class="check"><span class="check-num">2</span><div><b>Ready to execute</b><small>Relevant dependencies and decisions allow this action.</small></div></div><div class="check"><span class="check-num">3</span><div><b>Completed / accepted</b><small>Evidence supports result and next action.</small></div></div></div>
- </section>
- <section class="view" id="view-exceptions" role="region" aria-labelledby="tab-exceptions">
-  <div class="view-header"><div><h2>How an exception is handled</h2><p>Select a problem, then follow the decision pathway. These are proposed response patterns, not confirmed Emnify procedures or real incident records.</p></div><span class="fact-tag">ILLUSTRATIVE RESPONSE · NOT SOP</span></div>
-  <div class="exception-tools"><label for="exceptionKind">Exception type</label><select id="exceptionKind">
-    <option value="missing">Missing or ambiguous implementation detail</option>
-    <option value="technical">Technical feasibility / configuration</option>
-    <option value="pricing">Required Pricing approval / evidence</option>
-    <option value="finance">Conditional SIM-order Finance step</option>
-   </select><span class="legend-note" id="exceptionContext"></span>
-  </div>
-  <div class="method-flow" id="methodFlow" aria-label="Exception handling phases"></div>
-  <div class="exception-focus">
-    <div class="left"><span class="line-label" id="phaseLabel"></span><h3 id="phaseTitle"></h3><p id="phaseText"></p>
-      <div class="owner-note"><b>Next-action coordinator:</b> <span id="coordinator"></span><br><b>Authorized decision:</b> <span id="authority"></span></div>
-      <div class="next-split"><div><b>MAY CONTINUE · IF INDEPENDENT</b><p id="canContinue"></p></div><div><b>MUST WAIT / ESCALATE</b><p id="mustWait"></p></div></div>
+    <div class="lane-alert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg><span>Post-signature clarification ↩ Sales</span></div>
+    <p class="lane-caption">*Pricing applies only under its threshold rule. Sales Ops already reviews before sending.</p>
+  </article>
+  <article class="lane">
+    <h2>SIM order → Shipment</h2>
+    <div class="lane-flow" aria-label="Case-described SIM order flow">
+      <div class="lane-node">Portal / other route</div><span class="lane-arrow">›</span><div class="lane-node">Finance*</div><span class="lane-arrow">›</span><div class="lane-node">Logistics ships</div>
     </div>
-    <div class="right"><span class="line-label">Resolution and evidence</span><p id="evidenceNeeded"></p>
-      <div class="outcome-row"><label for="resolution" class="line-label">Illustrative decision outcome</label>
-        <select id="resolution" disabled><option value="pending">Pending / not yet established</option><option value="cleared">Authorized decision or required input confirmed</option><option value="blocked">Rejected, infeasible or disputed</option></select>
-        <div id="outcomeOutput" class="outcome-output" aria-live="polite"></div>
-      </div>
-      <p class="criteria-note" id="exceptionCaveat"></p>
-    </div>
-  </div>
-  <div class="control-panel"><span class="trace" id="excCount">01 / 04</span><div class="nav"><button id="excPrev" type="button">← Previous</button><button class="primary" id="excNext" type="button">Next phase →</button></div></div>
-  <div class="unknowns"><b>Core method:</b> Detect → route the decision to its authority → separate dependent from independent work → verify the actual decision and readiness. A new form does not replace a specialist decision, and no exception bypasses an existing required control.</div>
- </section>
+    <p class="lane-caption">*Finance processing applies to some orders. The case does not establish that manual handling or an alternative channel is a failure.</p>
+  </article>
+</div>
+<div class="friction"><span class="friction-title">TASK 3 · REPORTED FRICTIONS</span><span class="friction-chip">Clarification loops</span><span class="friction-chip">Onboarding waits</span><span class="friction-chip">SDM rework</span><small>Reported, not quantified</small></div>
+<details class="disclosure"><summary>Questions to validate before redesign (4)</summary><div class="four-cues"><div class="cue"><strong>HANDOVER</strong><span>Where does clarification start?</span></div><div class="cue"><strong>AUTHORITY</strong><span>Who can unblock the next step?</span></div><div class="cue"><strong>SIM ORDERS</strong><span>When does Finance apply?</span></div><div class="cue"><strong>IMPACT</strong><span>Does the change reduce rework?</span></div></div></details>
+</section>
+<section class="view" id="view-proposed" role="region" aria-labelledby="tab-proposed" hidden>
+<div class="viewhead"><h1>Proposed process</h1><span class="scope">CANDIDATE MODEL</span></div>
+<div class="stage-grid" aria-hidden="true"><div class="stage">J3 · Contracting</div><div class="stage">J3 → J4 · Handover</div><div class="stage">J4 · SIM fulfilment</div></div>
+<div class="stepgrid" id="stepgrid" aria-label="Six clickable process steps beginning at PR06"></div>
+<div class="route-note"><strong>PR10 · Make the next action executable</strong><span>Decision authority stays with the relevant team; independent work may proceed when ready.</span></div>
+<div class="focus"><div class="focus-main"><div class="focus-eyebrow" id="stepIndex"></div><h2 id="stepName"></h2><p id="stepPurpose"></p><div class="compact-outcomes"><div><b id="positiveLabel"></b><span id="positiveText"></span></div><div><b id="boundaryLabel"></b><span id="boundaryText"></span></div></div></div>
+<div class="criteria"><h3>For this step</h3><dl class="criteria-dl" id="stepCriteria"></dl><details class="criteria-full" id="stepMore"><summary>All five criteria + evidence note</summary><dl class="criteria-dl" id="stepFullCriteria"></dl><p class="criteria-footnote" id="stepCaveat"></p></details></div></div>
+<div class="after-route"><b>BEYOND PHYSICAL SHIPMENT</b><span>M1 Provision / activate → M2 Working connectivity → M3 First customer value</span></div>
+</section>
+<section class="view" id="view-exceptions" role="region" aria-labelledby="tab-exceptions" hidden>
+<div class="viewhead"><h1>Exception handling</h1><span class="scope">ILLUSTRATIVE</span></div>
+<div class="selector-head"><label for="exceptionKind">Choose an exception</label><select id="exceptionKind"><option value="missing">Missing implementation detail</option><option value="technical">Technical feasibility</option><option value="pricing">Pricing authorization</option><option value="finance">Finance processing for SIM order</option></select></div>
+<div class="phasebar" id="phasebar" aria-label="Four exception handling phases"></div>
+<div class="exc-panel"><div class="exc-left"><div class="exc-index" id="phaseIndex"></div><h2 id="phaseTitle"></h2><p class="exc-summary" id="phaseShort"></p><div class="authority-row"><span>DECISION OWNER</span><strong id="decisionOwner"></strong><span>COORDINATES</span><strong id="actionOwner"></strong></div>
+<div class="work-split"><article class="go"><h3>✓ MAY CONTINUE IF READY</h3><p id="canSummary"></p></article><article class="wait"><h3>— MUST WAIT</h3><p id="waitSummary"></p></article></div></div>
+<div class="exc-right"><h3>Decision & readiness</h3><p class="res-note" id="decisionHint"></p><select id="resolution" disabled aria-label="Illustrative verification outcome"><option value="pending">Pending / not verified</option><option value="cleared">Authorized / confirmed</option><option value="blocked">Rejected / blocked</option></select><div class="result" id="result" role="status" aria-live="polite"></div>
+<div class="phase-nav"><button class="navbtn" id="prevPhase" type="button">← Back</button><button class="navbtn primary" id="nextPhase" type="button">Next →</button></div></div></div>
+<details class="exc-detail"><summary>Full routing, evidence and policy boundary</summary><p><b>Coordinator:</b> <span id="fullCoordinator"></span></p><p><b>Authority:</b> <span id="fullAuthority"></span></p><p><b>Can continue if prerequisites are met:</b> <span id="fullCan"></span></p><p><b>Wait or escalate:</b> <span id="fullWait"></span></p><p><b>Evidence:</b> <span id="fullEvidence"></span></p><p><b>Condition:</b> <span id="fullCaveat"></span></p><p><b>Current phase:</b> <span id="fullPhase"></span></p><p>*Only independent work with its own valid inputs, decisions and authorizations.</p></details>
+</section>
 </main>
 <script>
 'use strict';
@@ -236,7 +181,7 @@ const steps = [
  {id:'PR14',title:'Fulfil & ship',owner:'Logistics',tag:'',details:{owner:'Logistics specialists execute physical SIM fulfillment and dispatch.',trigger:'An executable physical SIM order reaches Logistics.',inputs:'Accepted order, card/quantity, destination, and Finance processing evidence where applicable.',complete:'Physical SIM order is fulfilled and shipment is verified at the relevant dispatch milestone.',handoff:'Shipping status goes to the appropriate downstream actor/customer communicator. Dispatch is not proof of activation, connectivity or customer value.',caveat:'Later provisioning/connectivity and first-use milestones are distinct and not implied by shipment.'}}
 ];
 
-const $=id=>document.getElementById(id);
+
 const summaries=[
  {purpose:'Sales prepares the agreement, capturing the terms and scope that the next decision owners will review.',a:'Draft prepared',at:'Commercial scope, terms and relevant customer needs collected.',b:'Not yet a commitment',bt:'Applicable Pricing and Sales Ops controls still need to be addressed.'},
  {purpose:'Two separate controls: Pricing grants conditional prior authorization; Sales Ops performs its existing pre-send review.',a:'Applicable checks met',at:'Required Pricing approval is valid before commitment, and Sales Ops review is performed.',b:'Do not duplicate',bt:'Neither approval ownership nor review scope is transferred to Service Delivery.'},
@@ -245,54 +190,65 @@ const summaries=[
  {purpose:'Use the customer Portal or another legitimate SIM-order route, with Finance only when its actual rule applies.',a:'Order accepted',at:'Route-specific inputs and any required Finance processing are complete.',b:'Avoid false assumptions',bt:'An alternate channel alone does not imply a Finance hold.'},
  {purpose:'Logistics fulfills and dispatches a physical SIM order that is ready for shipment.',a:'Dispatch verified',at:'Track the relevant physical fulfillment milestone.',b:'Beyond shipping',bt:'Provisioning, working connectivity and first customer value must be checked separately.'}
 ];
+
 const exceptionModels={
  missing:{context:'PR10 · After a signed contract; Task 2/3 signal',coordinator:'SDM coordinates the actionable next step; Sales handles commercial clarification.',authority:'Sales clarifies agreed commitments; specialist approval only where its domain requires it.',can:'A genuinely independent implementation or physical-order preparation task whose own inputs and approvals are satisfied.',wait:'Any task that relies on the missing/ambiguous signed scope or customer requirement.',evidence:'Signed contract and version, exact missing field or ambiguous clause, Sales clarification, assigned next action, and confirmation that dependent work is ready.',caveat:'The case supports clarifications and delays; it does not prove a missing checklist is the principal cause.',phases:[['Detect the gap','Identify the precise missing or ambiguous requirement and which implementation tasks depend on it.'],['Clarify with Sales','Ask for a consolidated commercial interpretation, not a new general Sales Ops approval. Engage a specialist if there is a separate technical issue.'],['Split executable work','Maintain independent work only where all its own conditions are met; keep the affected task on hold with a named next-action owner.'],['Verify and resume','Check the clarification against the signed commitment, update relevant readiness and customer expectations, then proceed only where executable.']],resolution:{pending:'Affected tasks stay pending; maintain an owner, next check and accurate customer status. No assumed release.',cleared:'After a clear, authorized interpretation and verified prerequisites, release only the affected executable tasks; record the clarification.',blocked:'If the proposed interpretation conflicts with the signed commitment, route the commercial revision or dispute to authorized Sales/legal owners; do not let an SDM rewrite terms.'}},
  technical:{context:'PR10 · Illustrative technical setup dependency',coordinator:'Service Delivery Manager tracks readiness and the relevant customer dependency.',authority:'Competent technical owner (e.g., Solutions Engineering); Sales clarifies commercial terms if needed.',can:'Physical SIM-order preparation only when genuinely independent of the unresolved technical setup and separately authorized.',wait:'Configuration, provisioning or setup work that depends on the unresolved feasibility decision.',evidence:'Exact technical requirement, proposed configuration, feasibility response by authorized owner, affected dependencies and new readiness check.',caveat:'A technical mismatch is one possible cause, not established as the actual cause in the employer scenario.',phases:[['Detect technical uncertainty','Mark the exact service requirement or configuration that cannot be executed reliably with known inputs.'],['Send to technical authority','The specialist assesses feasibility; Sales is involved only for interpreting or changing commercial promises. SDM does not approve feasibility.'],['Protect independent work','Allow separately ready and authorized work to progress; do not imply that shipping a SIM resolves connectivity.'],['Verify technical readiness','Apply the actual technical decision, re-evaluate the affected step and provide a truthful customer update.']],resolution:{pending:'Technical setup remains blocked; only independent and authorized preparation may continue.',cleared:'Once the competent technical owner confirms feasibility and conditions, the SDM can coordinate the newly executable step; success still requires later validation.',blocked:'If infeasible, do not start the affected work. Escalate commercial options to Sales and the appropriate authorized parties; adjust commitments only through proper agreement.'}},
  pricing:{context:'PR07 · Before customer commitment; distinct control risk',coordinator:'Sales / applicable control-follow-up owner; Service Delivery does not take over Pricing compliance.',authority:'Pricing team grants the required prior approval for qualifying terms.',can:'Drafting and other preparatory activity that does not constitute an unauthorized customer commitment.',wait:'Sending/signing the below-threshold commitment until required prior Pricing authorization is valid and evidenced.',evidence:'Applicable price threshold, contract version, requested terms, approval decision and timestamp, and matching committed terms.',caveat:'Missing approval and missing evidence of an approval are different. If the commitment is already made, do not label a later approval as prior authorization.',phases:[['Check applicability','Determine whether the actual threshold rule applies and whether valid prior approval evidence is present.'],['Route to Pricing','Pricing decides qualifying price exceptions; verify the approved terms and version match the proposed customer commitment.'],['Protect the control','Noncommitting draft preparation can continue; no team bypasses mandatory prior authorization.'],['Verify before commitment','If approval was required, confirm valid prior authorization before signing/sending under actual policy. Handle discovered past deviations separately.']],resolution:{pending:'If approval is required but pending, the affected customer commitment cannot be treated as authorized.',cleared:'Proceed only if a valid Pricing decision existed before commitment and matches the terms. This simulator does not create approval.',blocked:'Rejected/unapproved below-threshold terms must be revised or escalated through commercial governance. For an already signed deviation, escalate remediation; never retroactively claim prior approval.',not_required:'If the threshold rule is confirmed inapplicable, there is no Pricing approval gate for that offer; the existing Sales Ops review and other applicable controls still stand.'}},
  finance:{context:'PR12 / PR13 / PR14 · Specific SIM-order route',coordinator:'Order-channel owner coordinates; Logistics accepts only an order ready for physical fulfillment.',authority:'Finance determines and performs its required processing for qualifying orders; Logistics owns physical dispatch.',can:'Orders/routes that do not require Finance, or independent order preparation meeting all release conditions.',wait:'Physical fulfillment of a qualifying order until its required Finance handling and Logistics acceptance are completed.',evidence:'Order route and details, actual condition triggering Finance, processing confirmation when applicable, order acceptance and shipment-readiness evidence.',caveat:'The scenario states only SOME orders require manual Finance processing. Alternate channels and manual work are not proof of waste.',phases:[['Identify the order route','Confirm Portal or other valid channel and the specific real rule that may trigger Finance processing.'],['Route only when required','If Finance applies, Finance processes the qualifying order; otherwise do not invent a universal Finance gate.'],['Separate eligible work','Prepare valid order details and independent tasks; avoid dispatch before any required release and Logistics acceptance.'],['Verify shipment handoff','Confirm required order processing, Logistics acceptance and physical dispatch milestone; track service readiness separately.']],resolution:{pending:'If Finance applies and processing is pending, the affected order cannot be released for physical shipment.',cleared:'Once applicable Finance requirements and Logistics readiness are verified, the physical order may proceed. Dispatch is not activation.',blocked:'If the order cannot be processed/released, return it to the correct order or Finance owner for correction; do not bypass a mandatory check.',not_required:'If the actual Finance condition does not apply, no Finance step is imposed solely because the route differs from the Portal. Logistics still checks that the physical order is ready.'}}
 };
-let activeView='current',selected=3,expanded=false,exceptionKind='technical',phase=0;
-// Three-view navigator. The previous compact top-right tabs made the views easy to miss.
-// "Show all three" renders all panels in sequence; no changes to analytical data or routing logic.
-let showAllViews=false;
-const viewNames={current:'Current case',proposed:'Proposed process',exceptions:'Exception handling'};
-function showView(which,{all=false}={}){
- if(!viewNames[which])which='current';
- activeView=which;showAllViews=all;
- for(const name of ['current','proposed','exceptions']){
-   $('view-'+name).hidden=!all && name!==which;
-   const active=name===which && !all;
-   $('tab-'+name).setAttribute('aria-pressed',String(active));
-   $('tab-'+name).classList.toggle('is-active',active);
- }
- $('showAll').setAttribute('aria-pressed',String(all));
- $('showAll').textContent=all?'Show one view ↑':'Show all three ↓';
- $('viewStatus').textContent=all?'ALL 3 VIEWS ARE VISIBLE BELOW · Scroll to compare':`VIEW ${String(['current','proposed','exceptions'].indexOf(which)+1)} OF 3 · ${viewNames[which]}`;
- if(which==='proposed' || all)renderProposed();
- if(which==='exceptions' || all)renderException();
+
+const $=id=>document.getElementById(id);
+let activeView='current',selected=0,exceptionKind='missing',phase=0;
+const viewNames=['current','proposed','exceptions'];
+function setView(which){if(!viewNames.includes(which))return;activeView=which;for(const v of viewNames){$('view-'+v).hidden=v!==which;$('tab-'+v).setAttribute('aria-selected',String(v===which));}if(which==='proposed')renderSteps();if(which==='exceptions')renderException();}
+for(const t of document.querySelectorAll('.tab'))t.addEventListener('click',()=>setView(t.dataset.view));
+const displaySteps=[
+ {id:'PR06',title:'Draft contract',owner:'Sales'},
+ {id:'PR07 / PR08',title:'Review & approve',owner:'Pricing* · Sales Ops'},
+ {id:'PR09',title:'Sign agreement',owner:'Sales · Customer'},
+ {id:'PR10',title:'Accept handover',owner:'Sales → SDM',improve:true},
+ {id:'PR12 / PR13',title:'Process SIM order',owner:'Customer · Finance*'},
+ {id:'PR14',title:'Fulfil & ship',owner:'Logistics'}
+];
+const shortLabels=['Owner','Starts','Done'];
+const mobileStage=['J3','J3','J3','J3→J4','J4','J4'];
+function criteriaAppend(dl,pairs){dl.replaceChildren();for(const [label,val] of pairs){const wrap=document.createElement('div');const dt=document.createElement('dt');dt.textContent=label;const dd=document.createElement('dd');dd.textContent=val;wrap.append(dt,dd);dl.append(wrap)}}
+function renderSteps(){
+ const div=$('stepgrid');div.replaceChildren();displaySteps.forEach((d,i)=>{const b=document.createElement('button');b.type='button';b.className='step'+(d.improve?' step-improve':'');b.setAttribute('aria-current',i===selected?'step':'false');b.innerHTML=`<span class="step-key"><span class="step-mobile-stage">${mobileStage[i]} · </span>${d.id}</span><span class="step-title">${d.title}</span>${d.improve?'<span class="step-badge">CLEAR NEXT STEP</span>':''}<span class="step-owner">${d.owner}</span>`;b.addEventListener('click',()=>{selected=i;$('stepMore').open=false;renderSteps()});div.append(b)});
+ const s=steps[selected],q=summaries[selected];$('stepIndex').textContent=`${String(selected+1).padStart(2,'0')} / 06 · ${s.id}`;$('stepName').textContent=s.title;$('stepPurpose').textContent=q.purpose;
+ $('positiveLabel').textContent=q.a;$('positiveText').textContent=q.at;$('boundaryLabel').textContent=q.b;$('boundaryText').textContent=q.bt;
+ criteriaAppend($('stepCriteria'),[[shortLabels[0],s.owner],[shortLabels[1],s.details.trigger],[shortLabels[2],s.details.complete]]);
+ criteriaAppend($('stepFullCriteria'),[['Owner & authority',s.details.owner],['Trigger',s.details.trigger],['Inputs & dependencies',s.details.inputs],['Completion criteria',s.details.complete],['Next handoff',s.details.handoff]]);
+ $('stepCaveat').textContent=s.details.caveat;
 }
-for(const b of document.querySelectorAll('[data-view]'))b.addEventListener('click',()=>showView(b.dataset.view));
-$('showAll').addEventListener('click',()=>showView(activeView,{all:!showAllViews}));
-function drawNodes(){return steps.map((s,i)=>`<button type="button" class="step" data-i="${i}" aria-current="${i===selected?'step':'false'}" aria-label="Inspect ${s.id} ${s.title}"><span class="step-idx">${s.id}</span><span class="step-name">${s.title}</span><span class="step-owner">${s.owner}</span></button>`).join('')}
-function renderProposed(){ $('flow').innerHTML=drawNodes();$('flow').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{selected=Number(b.dataset.i);expanded=false;renderProposed()}));let s=steps[selected],x=summaries[selected];
- $('focusIndex').textContent=`STEP ${String(selected+1).padStart(2,'0')} / 06 · ${s.id}`;$('caseLabel').textContent='PROPOSED / CONDITIONAL';$('focusTitle').textContent=s.title;$('narrative').dataset.exception='false';$('focusExplain').textContent=x.purpose;
- $('branchATitle').textContent=x.a;$('branchAText').textContent=x.at;$('branchBTitle').textContent=x.b;$('branchBText').textContent=x.bt;
- const short=[['Responsible',s.owner],['Starts when',s.details.trigger],['Done when',s.details.complete]];
- const full=[['Owner & decision authority',s.details.owner],['Trigger',s.details.trigger],['Inputs & dependencies',s.details.inputs],['Completion criteria',s.details.complete],['Next handoff & readiness',s.details.handoff]];
- const dl=$('criteriaItems');dl.replaceChildren();for(const [name,val] of expanded?full:short){const div=document.createElement('div');div.className='criterion';const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=name;dd.textContent=val;div.append(dt,dd);dl.append(div)}
- $('criteriaNote').textContent=expanded?'Evidence boundary: '+s.details.caveat:'Open all criteria to see the full original step definition and evidence boundary.';
- $('toggleDetails').textContent=expanded?'Show summary ↑':'View all criteria ↓';$('toggleDetails').setAttribute('aria-expanded',String(expanded));$('count').textContent=`${String(selected+1).padStart(2,'0')} / 06`;
- $('prev').disabled=selected===0;$('next').textContent=selected===5?'Start again ↺':'Next →';}
-$('toggleDetails').addEventListener('click',()=>{expanded=!expanded;renderProposed()});$('prev').addEventListener('click',()=>{if(selected>0){selected--;expanded=false;renderProposed()}});$('next').addEventListener('click',()=>{selected=(selected+1)%steps.length;expanded=false;renderProposed()});
-function renderException(){const m=exceptionModels[exceptionKind];$('exceptionKind').value=exceptionKind;$('exceptionContext').textContent=m.context;const opt=$('resolution').querySelector('[value=not_required]');if(opt)opt.remove();if(exceptionKind==='pricing'||exceptionKind==='finance'){$('resolution').add(new Option('Control not applicable under actual rule','not_required'))}if(phase!==3)$('resolution').value='pending';$('resolution').disabled=phase!==3;
- const phases=['Detect & classify','Route decision','Split the work','Verify & continue'];$('methodFlow').innerHTML=phases.map((name,i)=>`<button type="button" class="method-step" data-phase="${i}" aria-current="${phase===i?'step':'false'}"><span class="phase-num">0${i+1}</span><span class="phase-name">${name}</span></button>`).join('');$('methodFlow').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{phase=Number(b.dataset.phase);renderException()}));
- $('phaseLabel').textContent=`PHASE ${phase+1} OF 4 · ${exceptionKind.toUpperCase()} EXAMPLE`;$('phaseTitle').textContent=m.phases[phase][0];$('phaseText').textContent=m.phases[phase][1];$('coordinator').textContent=m.coordinator;$('authority').textContent=m.authority;
- $('canContinue').textContent=m.can;$('mustWait').textContent=m.wait;$('evidenceNeeded').textContent=m.evidence;$('exceptionCaveat').textContent='Evidence / policy boundary: '+m.caveat;
- $('excCount').textContent=`0${phase+1} / 04`;$('excPrev').disabled=phase===0;$('excNext').textContent=phase===3?'Restart ↺':'Next phase →';renderOutcome();}
-function renderOutcome(){const m=exceptionModels[exceptionKind],r=$('resolution').value;$('outcomeOutput').textContent=phase===3?m.resolution[r]:'Decision not yet verified. Complete the earlier phases; only the final readiness check can support a conditional release or escalation.';}
-$('exceptionKind').addEventListener('change',e=>{exceptionKind=e.target.value;phase=0;$('resolution').value='pending';renderException()});$('resolution').addEventListener('change',renderOutcome);
-$('excPrev').addEventListener('click',()=>{if(phase>0){phase--;renderException()}});$('excNext').addEventListener('click',()=>{phase=(phase+1)%4;renderException()});
+const exceptionLabels={
+ missing:{authority:'Sales',coordinator:'Service Delivery',go:'Independent preparation',wait:'Scope-dependent tasks',phases:['Identify the missing term','Clarify with Sales','Keep independent tasks moving','Validate & resume']},
+ technical:{authority:'Technical specialist',coordinator:'Service Delivery',go:'Independent SIM preparation*',wait:'Affected configuration',phases:['Identify technical uncertainty','Route to technical owner','Protect independent tasks','Validate feasibility']},
+ pricing:{authority:'Pricing',coordinator:'Sales',go:'Noncommitting preparation',wait:'Unapproved commitment',phases:['Check threshold','Request prior decision','Do not bypass approval','Verify authorization']},
+ finance:{authority:'Finance*',coordinator:'Order / Logistics',go:'Eligible independent orders',wait:'Affected SIM shipment',phases:['Check route and trigger','Route when required','Prepare eligible orders','Confirm shipment readiness']}
+};
+function renderException(){
+ const m=exceptionModels[exceptionKind],ui=exceptionLabels[exceptionKind];$('exceptionKind').value=exceptionKind;
+ const out=$('resolution');const optional=out.querySelector('option[value="not_required"]');if(optional)optional.remove();if(exceptionKind==='pricing'||exceptionKind==='finance')out.add(new Option('Control not applicable','not_required'));
+ out.disabled=phase!==3;if(phase!==3)out.value='pending';
+ const bar=$('phasebar');bar.replaceChildren();['Detect','Route','Split','Verify'].forEach((n,i)=>{const b=document.createElement('button');b.type='button';b.className='phasebtn';b.setAttribute('aria-current',String(i===phase?'step':'false'));b.innerHTML=`<span class="num">0${i+1}</span>${n}`;b.addEventListener('click',()=>{phase=i;renderException()});bar.append(b)});
+ $('phaseIndex').textContent=`PHASE 0${phase+1} / 04 · ${exceptionKind.toUpperCase()}`;
+ $('phaseTitle').textContent=ui.phases[phase];$('phaseShort').textContent=m.phases[phase][1];
+ $('decisionOwner').textContent=ui.authority;$('actionOwner').textContent=ui.coordinator;$('canSummary').textContent=ui.go;$('waitSummary').textContent=ui.wait;
+ $('fullCoordinator').textContent=m.coordinator;$('fullAuthority').textContent=m.authority;$('fullCan').textContent=m.can;$('fullWait').textContent=m.wait;$('fullEvidence').textContent=m.evidence;$('fullCaveat').textContent=m.caveat;$('fullPhase').textContent=m.phases[phase][1];
+ $('decisionHint').textContent=phase===3?'Choose an illustrative outcome after verifying evidence.':'Outcome stays pending until the verification stage.';
+ $('prevPhase').disabled=phase===0;$('nextPhase').textContent=phase===3?'Start over ↻':'Next →';renderResult();
+}
+function renderResult(){const m=exceptionModels[exceptionKind];const o=$('resolution');const selectedOutcome=phase===3?o.value:'pending';const output=phase===3?m.resolution[selectedOutcome]:'No decision confirmed yet. Keep affected work pending; independently ready work may proceed.';
+ $('result').textContent=output;$('result').dataset.status=selectedOutcome;
+}
+$('exceptionKind').addEventListener('change',e=>{exceptionKind=e.target.value;phase=0;$('resolution').value='pending';renderException()});
+$('resolution').addEventListener('change',renderResult);
+$('prevPhase').addEventListener('click',()=>{if(phase>0)phase--;renderException()});$('nextPhase').addEventListener('click',()=>{phase=(phase+1)%4;$('resolution').value='pending';renderException()});
 $('fullscreen').addEventListener('click',async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await $('shell').requestFullscreen()}catch(e){}});
-document.addEventListener('keydown',e=>{if(e.target.closest('button,select,input,textarea'))return;if(e.key==='ArrowRight'&&activeView==='proposed'){$('next').click()}if(e.key==='ArrowLeft'&&activeView==='proposed'){$('prev').click()}});
-document.documentElement.classList.add('js-ready');renderProposed();renderException();showView('current');
-</script></body></html>
+document.addEventListener('keydown',e=>{if(e.target.closest('button,select,input,textarea,summary'))return;if(e.key==='ArrowRight'&&activeView==='proposed'){selected=(selected+1)%6;renderSteps();}if(e.key==='ArrowLeft'&&activeView==='proposed'){selected=(selected+5)%6;renderSteps();}});
+renderSteps();renderException();setView('current');
+</script>
+</body>
+</html>
