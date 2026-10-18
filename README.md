@@ -6,7 +6,7 @@ Independent, unofficial support material for an interview case study. Not an Emn
 
 - `/` — index / three interactive explanations
 - `/connected-delivery/` — Connected Delivery v0.3.9 analytical explorer (public derivative: private Drive document URLs removed)
-- `/q03/` — Q03 Pipeline Simulator v4.1 (working REVIEW version, no approval for presentation yet)
+- `/q03/` — Q03 Pipeline Simulator (working REVIEW version; Drive file title says v4.2 while the embedded HTML heading says v4.1; version label pending reconciliation)
 - `/q05/` — Q05 Business Case four-page v2 (all starting numbers and scenarios hypothetical)
 
 ## Publish with GitHub Pages
